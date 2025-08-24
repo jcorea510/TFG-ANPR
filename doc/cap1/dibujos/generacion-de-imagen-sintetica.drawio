@@ -1,0 +1,111 @@
+<mxfile host="Electron" agent="Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/27.0.2 Chrome/134.0.6998.205 Electron/35.3.0 Safari/537.36" version="27.0.2">
+  <diagram name="Page-1" id="qlns-7uNXpXOB81bCIvi">
+    <mxGraphModel dx="1019" dy="632" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="nOl86ZD3Q217qAO-UIb8-16" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="nOl86ZD3Q217qAO-UIb8-1" target="nOl86ZD3Q217qAO-UIb8-4">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="nOl86ZD3Q217qAO-UIb8-1" value="inicio" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="350" y="80" width="90" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="nOl86ZD3Q217qAO-UIb8-18" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="nOl86ZD3Q217qAO-UIb8-2" target="nOl86ZD3Q217qAO-UIb8-5">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="nOl86ZD3Q217qAO-UIb8-2" value="Decodificar tipo de placa" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="335" y="200" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="nOl86ZD3Q217qAO-UIb8-17" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="nOl86ZD3Q217qAO-UIb8-4" target="nOl86ZD3Q217qAO-UIb8-2">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="nOl86ZD3Q217qAO-UIb8-4" value="1: Definir tipo de placa&lt;div&gt;2: ¿Aumento en caracteres?&lt;/div&gt;" style="shape=parallelogram;perimeter=parallelogramPerimeter;whiteSpace=wrap;html=1;fixedSize=1;" vertex="1" parent="1">
+          <mxGeometry x="286.25" y="140" width="217.5" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="nOl86ZD3Q217qAO-UIb8-19" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="nOl86ZD3Q217qAO-UIb8-5" target="nOl86ZD3Q217qAO-UIb8-9">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="nOl86ZD3Q217qAO-UIb8-5" value="Generar número de placa aleatoria" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="335" y="280" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="nOl86ZD3Q217qAO-UIb8-21" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="nOl86ZD3Q217qAO-UIb8-6" target="nOl86ZD3Q217qAO-UIb8-7">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="nOl86ZD3Q217qAO-UIb8-32" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=1;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="nOl86ZD3Q217qAO-UIb8-6" target="nOl86ZD3Q217qAO-UIb8-15">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="nOl86ZD3Q217qAO-UIb8-6" value="¿Finalizó&lt;div&gt;&amp;nbsp;iteración&lt;div&gt;&amp;nbsp;sobre caracter en&amp;nbsp;&lt;/div&gt;&lt;div&gt;número de&lt;/div&gt;&lt;div&gt;&amp;nbsp;placas&lt;/div&gt;&lt;/div&gt;" style="rhombus;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="327.5" y="440" width="135" height="110" as="geometry" />
+        </mxCell>
+        <mxCell id="nOl86ZD3Q217qAO-UIb8-22" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=1;entryDx=0;entryDy=0;" edge="1" parent="1" source="nOl86ZD3Q217qAO-UIb8-7" target="nOl86ZD3Q217qAO-UIb8-8">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="nOl86ZD3Q217qAO-UIb8-7" value="Definir ubicación&lt;div&gt;del caracter en placa&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="503.75" y="465" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="nOl86ZD3Q217qAO-UIb8-24" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=0;exitDx=0;exitDy=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;" edge="1" parent="1" source="nOl86ZD3Q217qAO-UIb8-8" target="nOl86ZD3Q217qAO-UIb8-11">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="nOl86ZD3Q217qAO-UIb8-8" value="Cargar una plantila&lt;div&gt;de caracter&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="503.75" y="360" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="nOl86ZD3Q217qAO-UIb8-20" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="nOl86ZD3Q217qAO-UIb8-9" target="nOl86ZD3Q217qAO-UIb8-6">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="nOl86ZD3Q217qAO-UIb8-9" value="Cargar plantilla&lt;div&gt;de placa según tipo&lt;/div&gt;&lt;div&gt;de placa&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="335" y="360" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="nOl86ZD3Q217qAO-UIb8-28" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="nOl86ZD3Q217qAO-UIb8-10" target="nOl86ZD3Q217qAO-UIb8-13">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="nOl86ZD3Q217qAO-UIb8-10" value="Insertar el caracter en la plantilla según ubicación definida" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="650" y="260" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="nOl86ZD3Q217qAO-UIb8-25" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;exitX=0.5;exitY=0;exitDx=0;exitDy=0;" edge="1" parent="1" source="nOl86ZD3Q217qAO-UIb8-11" target="nOl86ZD3Q217qAO-UIb8-12">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="548.13" y="220" as="sourcePoint" />
+            <mxPoint x="579.38" y="120" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="nOl86ZD3Q217qAO-UIb8-26" value="Sí" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="nOl86ZD3Q217qAO-UIb8-25">
+          <mxGeometry x="0.2489" y="-1" relative="1" as="geometry">
+            <mxPoint y="-11" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="nOl86ZD3Q217qAO-UIb8-29" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="nOl86ZD3Q217qAO-UIb8-11" target="nOl86ZD3Q217qAO-UIb8-10">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="nOl86ZD3Q217qAO-UIb8-30" value="No" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="nOl86ZD3Q217qAO-UIb8-29">
+          <mxGeometry x="-0.6277" y="-1" relative="1" as="geometry">
+            <mxPoint x="2" y="-11" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="nOl86ZD3Q217qAO-UIb8-11" value="¿Aumento en&amp;nbsp;&lt;div&gt;caracter?&lt;/div&gt;" style="rhombus;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="508.75" y="240" width="110" height="100" as="geometry" />
+        </mxCell>
+        <mxCell id="nOl86ZD3Q217qAO-UIb8-27" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="nOl86ZD3Q217qAO-UIb8-12">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="710" y="250" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="nOl86ZD3Q217qAO-UIb8-12" value="Aplicar aumentado&lt;div&gt;en caracter&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="650" y="160" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="nOl86ZD3Q217qAO-UIb8-31" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=1;entryDx=0;entryDy=0;" edge="1" parent="1" source="nOl86ZD3Q217qAO-UIb8-13" target="nOl86ZD3Q217qAO-UIb8-6">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="710" y="580" />
+              <mxPoint x="395" y="580" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="nOl86ZD3Q217qAO-UIb8-13" value="Insertar el caracter en la plantilla" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="650" y="360" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="nOl86ZD3Q217qAO-UIb8-15" value="Retornar imagen" style="shape=parallelogram;perimeter=parallelogramPerimeter;whiteSpace=wrap;html=1;fixedSize=1;" vertex="1" parent="1">
+          <mxGeometry x="166.25" y="465" width="120" height="60" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

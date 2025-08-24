@@ -1,0 +1,101 @@
+<mxfile host="Electron" agent="Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/27.0.2 Chrome/134.0.6998.205 Electron/35.3.0 Safari/537.36" version="27.0.2">
+  <diagram name="Page-1" id="9J4e4K6hWDlBCAgQdckX">
+    <mxGraphModel dx="1019" dy="632" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="CbLp9DnRkgPNGUZ_RYR3-16" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="CbLp9DnRkgPNGUZ_RYR3-1" target="CbLp9DnRkgPNGUZ_RYR3-7">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="CbLp9DnRkgPNGUZ_RYR3-23" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=1;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="CbLp9DnRkgPNGUZ_RYR3-1" target="CbLp9DnRkgPNGUZ_RYR3-22">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="CbLp9DnRkgPNGUZ_RYR3-24" value="Sí" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="CbLp9DnRkgPNGUZ_RYR3-23">
+          <mxGeometry x="-0.0441" y="-2" relative="1" as="geometry">
+            <mxPoint y="-10" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="CbLp9DnRkgPNGUZ_RYR3-1" value="Iteración&lt;div&gt;&amp;nbsp;==&amp;nbsp;&lt;br&gt;número de iteraciones&lt;/div&gt;" style="rhombus;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="320" y="280" width="120" height="110" as="geometry" />
+        </mxCell>
+        <mxCell id="CbLp9DnRkgPNGUZ_RYR3-13" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="CbLp9DnRkgPNGUZ_RYR3-2" target="CbLp9DnRkgPNGUZ_RYR3-4">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="CbLp9DnRkgPNGUZ_RYR3-2" value="inicio" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="335" y="70" width="90" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="CbLp9DnRkgPNGUZ_RYR3-11" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="CbLp9DnRkgPNGUZ_RYR3-3" target="CbLp9DnRkgPNGUZ_RYR3-1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="CbLp9DnRkgPNGUZ_RYR3-3" value="1: Definir número de iteraciones&lt;div&gt;2: ¿Debe aplicar aumentado?&lt;/div&gt;" style="shape=parallelogram;perimeter=parallelogramPerimeter;whiteSpace=wrap;html=1;fixedSize=1;" vertex="1" parent="1">
+          <mxGeometry x="260" y="210" width="240" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="CbLp9DnRkgPNGUZ_RYR3-12" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="CbLp9DnRkgPNGUZ_RYR3-4" target="CbLp9DnRkgPNGUZ_RYR3-3">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="CbLp9DnRkgPNGUZ_RYR3-4" value="Definir tipos de placas a probar (eg 256-nn, 256-nnn, etc)" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="320" y="130" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="CbLp9DnRkgPNGUZ_RYR3-10" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="CbLp9DnRkgPNGUZ_RYR3-7" target="CbLp9DnRkgPNGUZ_RYR3-8">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="CbLp9DnRkgPNGUZ_RYR3-7" value="Selección aleatoria de tipo de placa" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="490" y="305" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="CbLp9DnRkgPNGUZ_RYR3-26" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="CbLp9DnRkgPNGUZ_RYR3-8" target="CbLp9DnRkgPNGUZ_RYR3-25">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="CbLp9DnRkgPNGUZ_RYR3-8" value="Generación de placas" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="490" y="390" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="CbLp9DnRkgPNGUZ_RYR3-17" value="No" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" vertex="1" parent="1">
+          <mxGeometry x="440" y="308" width="40" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="CbLp9DnRkgPNGUZ_RYR3-21" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=1;entryDx=0;entryDy=0;" edge="1" parent="1" source="CbLp9DnRkgPNGUZ_RYR3-19" target="CbLp9DnRkgPNGUZ_RYR3-1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="379.9999999999999" y="470" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="CbLp9DnRkgPNGUZ_RYR3-19" value="Guardar imágen&lt;div&gt;y etiqueta&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="160" y="410" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="CbLp9DnRkgPNGUZ_RYR3-22" value="Finalizar programa" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="150" y="305" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="CbLp9DnRkgPNGUZ_RYR3-28" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=1;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="CbLp9DnRkgPNGUZ_RYR3-25" target="CbLp9DnRkgPNGUZ_RYR3-27">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="CbLp9DnRkgPNGUZ_RYR3-30" value="Sí" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="CbLp9DnRkgPNGUZ_RYR3-28">
+          <mxGeometry x="-0.0154" y="-2" relative="1" as="geometry">
+            <mxPoint x="2" y="-13" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="CbLp9DnRkgPNGUZ_RYR3-31" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;exitX=0.5;exitY=1;exitDx=0;exitDy=0;" edge="1" parent="1" source="CbLp9DnRkgPNGUZ_RYR3-25" target="CbLp9DnRkgPNGUZ_RYR3-19">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="530" y="610" as="sourcePoint" />
+            <mxPoint x="139.9999999999999" y="520" as="targetPoint" />
+            <Array as="points">
+              <mxPoint x="550" y="610" />
+              <mxPoint x="140" y="610" />
+              <mxPoint x="140" y="440" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="CbLp9DnRkgPNGUZ_RYR3-34" value="No" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="CbLp9DnRkgPNGUZ_RYR3-31">
+          <mxGeometry x="-0.6637" y="-1" relative="1" as="geometry">
+            <mxPoint x="-5" y="-9" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="CbLp9DnRkgPNGUZ_RYR3-25" value="¿Aplicar aumento?" style="rhombus;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="490" y="480" width="120" height="110" as="geometry" />
+        </mxCell>
+        <mxCell id="CbLp9DnRkgPNGUZ_RYR3-29" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=1;entryDx=0;entryDy=0;" edge="1" parent="1" source="CbLp9DnRkgPNGUZ_RYR3-27" target="CbLp9DnRkgPNGUZ_RYR3-19">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="CbLp9DnRkgPNGUZ_RYR3-27" value="Aplicar aumento de datos" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="305" y="505" width="120" height="60" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
