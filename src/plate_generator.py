@@ -6,7 +6,7 @@ import numpy as np
 
 # --- CONFIG ---
 CHAR_COLORS = {
-    "256": "red",
+    "265": "green",
     "d": "blue",
     "m": "blue",
     "vh": "red",
@@ -16,8 +16,8 @@ CHAR_COLORS = {
 }
 
 PATTERNS = {
-    "256-nn":     "nn",
-    "256-nnn":    "nnn",
+    "265-nn":     "nn",
+    "265-nnn":    "nnn",
     "cl-nnnnnn":  "nnnnnn",
     "d-nnn":      "nnn",
     "vh-nn":      "nn",
@@ -29,8 +29,8 @@ PATTERNS = {
 }
 
 CODE_TO_FOLDER = {
-    "256-nnn": "tec_vehicle_3char", #if similar names exists order is important, because it checks startwith "string"
-    "256-nn": "tec_vehicle_2char",
+    "265-nnn": "tec_vehicle_3char", #if similar names exists order is important, because it checks startwith "string"
+    "265-nn": "tec_vehicle_2char",
     "d": "disabled",
     "cl": "lightweight_charger",
     "m": "motorbike",
@@ -40,14 +40,14 @@ CODE_TO_FOLDER = {
 }
 
 CODE_EXTRACT = {
-    "256-nn":     "256-",
-    "256-nnn":    "256-",
-    "cl-nnnnnn":  "cl-",
-    "d-nnn":      "d-",
-    "vh-nn":      "vh-",
-    "vh-nnn":     "vh-",
-    "m-nnnnnn":   "m-",
-    "m-nnn/nnn":  "m-",
+    "265-nn":     "265_",
+    "265-nnn":    "265_",
+    "cl-nnnnnn":  "CL_",
+    "d-nnn":      "D_",
+    "vh-nn":      "VH_",
+    "vh-nnn":     "VH_",
+    "m-nnnnnn":   "M_",
+    "m-nnn/nnn":  "M_",
     "lll-nnn":    "",
     "nnnnnn":     ""
 }
@@ -185,9 +185,9 @@ def paint_with_texture(char_img, color=(0, 0, 255)):
             (x, y),
             np.random.randint(10, 20),
             (
-                np.random.randint(max(color[0]-40,0), min(color[0]+40,255)),
-                np.random.randint(max(color[1]-40,0), min(color[1]+40,255)),
-                np.random.randint(max(color[2]-40,0), min(color[2]+40,255))
+                np.random.randint(max(color[0]-20,0), min(color[0]+20,255)),
+                np.random.randint(max(color[1]-20,0), min(color[1]+20,255)),
+                np.random.randint(max(color[2]-20,0), min(color[2]+20,255))
             ),
             -1
         )
@@ -209,10 +209,10 @@ def degrade(img):
         img = img.filter(ImageFilter.GaussianBlur(radius=random.uniform(0.5, 1.5)))
     if random.random() < 0.5:
         enhancer = ImageEnhance.Contrast(img)
-        img = enhancer.enhance(random.uniform(0.7, 1.1))
+        img = enhancer.enhance(random.uniform(0.7, 1.5))
     if random.random() < 0.5:
         enhancer = ImageEnhance.Brightness(img)
-        img = enhancer.enhance(random.uniform(0.8, 1.2))
+        img = enhancer.enhance(random.uniform(0.8, 1.0))
     return img
 
 def add_screws(plate_img):
@@ -315,7 +315,9 @@ def generate_plate(plate_code, mode="exact", augment=False):
     # if augment:
     plate_img = add_screws(plate_img)
     
-    plate_id = code_for_plate + "".join(chars)
+    chars = "".join(chars)
+    chars = chars.replace("-", "")
+    plate_id = f"{code_for_plate}{chars}"
     return plate_img, plate_id
 
 # --- Example usage ---

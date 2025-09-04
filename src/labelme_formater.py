@@ -21,11 +21,22 @@ IMAGES_VAL_DIR = "yolo/images/val"
 LABELS_TRAIN_DIR = "yolo/labels/train"
 LABELS_VAL_DIR = "yolo/labels/val"
 YAML_DESCRIPTOR = "yolo/data.yaml"
-PLATE_IMG_TRAIN_DIR = "license_plates/images/train"
-PLATE_IMG_VAL_DIR = "license_plates/images/val"
-PLATE_LABEL_TRAIN_CSV = "license_plates/train.csv"
-PLATE_LABEL_VAL_CSV = "license_plates/val.csv"
+PLATE_IMG_TRAIN_DIR = "fast_ocr/train/images"
+PLATE_IMG_VAL_DIR = "fast_ocr/valid/images"
+PLATE_LABEL_TRAIN_CSV = "fast_ocr/train/annotations.csv"
+PLATE_LABEL_VAL_CSV = "fast_ocr/valid/annotations.csv"
+PLATE_CONFIG = "fast_ocr/plate_config.yaml"
 
+def plateConfig(out_directory: str) -> None:
+    with open(os.path.join(out_directory, PLATE_CONFIG), "w") as f:
+        f.write('max_plate_slots: 8\n')
+        f.write('alphabet: "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ_"\n')
+        f.write('pad_char: "_"  \n')
+        f.write('img_height: 64\n')
+        f.write('img_width: 160\n')
+        f.write('keep_aspect_ratio: true\n')
+        f.write('interpolation: linear  \n')
+        f.write('image_color_mode: rgb\n')
 
 def getLabelLinesFormat(data: Dict) -> str:
     lines = []
@@ -79,18 +90,20 @@ def formatLicensePlates(image_directory: str, out_directory: str, data: Dict, tr
     label_csv = os.path.join(out_directory, PLATE_LABEL_TRAIN_CSV if train else PLATE_LABEL_VAL_CSV)
     with open(label_csv, "a") as f:
         for shape in data[LABEL_INFO]:
-            license_plate = shape[LICENSE_PLATE]
+            license_plate = shape[LICENSE_PLATE].upper()
+            license_plate = license_plate.replace(" ", "_")
+            license_plate = license_plate.replace("-", "")
             x1, y1 = shape[COORDINATES][0]
             x2, y2 = shape[COORDINATES][1]
             x1, y1, x2, y2 = map(int, [x1, y1, x2, y2])
 
             cropped_img = img[min(y1,y2):max(y1,y2), min(x1,x2):max(x1,x2)]
             unique_id = uuid.uuid4().hex[:8]
-            filename = f"{license_plate}_{unique_id}.jpg"
+            filename = f"{unique_id}.jpg"
             img_out_path = os.path.join(plate_img_dir, filename)
 
             cv2.imwrite(img_out_path, cropped_img)
-            f.write(f"{filename},{license_plate}\n")
+            f.write(f"images/{filename},{license_plate}\n")
 
 def formatDataset(
     label_directory: str, image_directory: str, out_directory: str, val_ratio: float = 0.2
@@ -110,6 +123,13 @@ def formatDataset(
     os.makedirs(labels_val_out, exist_ok=True)
     os.makedirs(os.path.join(out_directory, IMAGES_TRAIN_DIR), exist_ok=True)
     os.makedirs(os.path.join(out_directory, IMAGES_VAL_DIR), exist_ok=True)
+    os.makedirs(os.path.join(out_directory, PLATE_IMG_TRAIN_DIR), exist_ok=True)
+    os.makedirs(os.path.join(out_directory, PLATE_IMG_VAL_DIR), exist_ok=True)
+    
+    with open(os.path.join(out_directory, PLATE_LABEL_TRAIN_CSV), "w") as f:
+        f.write("image_path,plate_text\n")
+    with open(os.path.join(out_directory, PLATE_LABEL_VAL_CSV), "w") as f:
+        f.write("image_path,plate_text\n")
 
     for file in json_files:
         json_path = os.path.join(label_directory, file)
@@ -135,6 +155,7 @@ def formatDataset(
             formatLicensePlates(image_directory, out_directory, data, train=False)
 
     createYamlDescriptor(out_directory)
+    plateConfig(out_directory)
 
 # CLI
 parser = argparse.ArgumentParser(

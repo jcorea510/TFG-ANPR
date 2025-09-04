@@ -1,0 +1,230 @@
+\documentclass[12pt,a4paper]{article}
+\usepackage[margin=2cm]{geometry}
+\usepackage[spanish]{babel}
+\usepackage{graphicx, multicol, latexsym, amsmath, amssymb}
+\usepackage{array}
+\usepackage{tabularx}
+\usepackage{setspace}
+\usepackage{titlesec}
+\usepackage{subcaption}
+\usepackage{float}
+\usepackage{url}
+\usepackage{hyperref}
+
+% Ajuste de espacio entre secciones
+\titlespacing*{\section}{0pt}{0.5em}{0.5em}
+
+\renewcommand{\arraystretch}{1.3}
+
+\begin{document}
+
+% ---------------------------
+% Encabezado con datos
+% ---------------------------
+\noindent
+\begin{tabularx}{\textwidth}{|X|X|}
+\hline
+\textbf{Carné:} 2020045294 & \textbf{Nombre:} Justin Jaffeth Corea Masís \\
+\hline
+\textbf{Correo:} coreajustin288@estudiantec.cr & \textbf{Semana:} 4 del 27/08/2025 al 3/09/2025 \\
+\hline
+\end{tabularx}
+
+\vspace{0.5cm}
+
+% ---------------------------
+% Tabla de actividades
+% ---------------------------
+\section*{Actividades realizadas}
+
+% \begin{tabularx}{\textwidth}{|>{\raggedright\arraybackslash}p{8cm}|c|c|}
+\begin{tabularx}{\textwidth}{|>{\raggedright\arraybackslash}p{12cm}|c|c|}
+\hline
+\textbf{Actividad} & \textbf{Fecha} & \textbf{Horas} \\
+\hline
+	Implementación de pruebas de YOLO con placas de vehículos de otros países. & 29/08/2025 & 4 \\
+\hline
+	Reentrenar YOLO con un conjunto de datos más grande y variado y hacer comparación de resultados. & 30/08/2025 & 4 \\
+\hline
+	Implementar el sistema de reconocimiento de caracteres (OCR)
+	para extraer la información de las placas detectadas. & 31/08/2025 & 8 \\
+\hline
+	Entrenar versiones alternativas de OCR y ejecutar pruebas comparativas con W\&B. & 01/09/2025 & 8 \\
+\hline
+	Integrar módulos en un prototipo de App. & 02/09/2025 & 4 \\
+\hline
+	Documentar los resultados obtenidos hasta el momento. & 02/09/2025 & 4 \\
+\hline
+\end{tabularx}
+
+\vspace{1cm}
+
+% ---------------------------
+% Firma
+% ---------------------------
+\noindent
+\textbf{Firma del Profesor Asesor:}
+
+\vspace{2cm}
+
+\noindent\rule{8cm}{0.4pt}  
+Nombre y firma
+
+\newpage
+
+\section{Detección de placas}
+\subsection{Comparación de modelos}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.7\linewidth]{../../src/runs/eval/new_model2/confusion_matrix.png}
+	\caption{Desempeño del nuevo modelo ante imágenes de varios países}
+	\label{fig:yolo_new}
+\end{figure}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.7\linewidth]{../../src/runs/eval/old_model2/confusion_matrix.png}
+	\caption{Desempeño del modelo original ante imágenes de varios países}
+	\label{fig:yolo_old}
+\end{figure}
+
+\subsection{Ejemplos de detección comparativa entre etiquetas y predicciones} 
+
+\begin{figure}[H]
+	\centering
+	\begin{subfigure}[b]{0.45\textwidth}
+		\centering
+		\includegraphics[width=\linewidth]{/home/akai/Pictures/001cdd25e148cd36.jpg}
+		\caption{Fallo total. Vió una placa donde no había. Falló dos veces placas}
+		\label{fig:det_fail1}
+	\end{subfigure}
+	\hfill
+	\begin{subfigure}[b]{0.45\textwidth}
+		\centering
+		\includegraphics[width=\linewidth]{/home/akai/Pictures/0021af0b921af690.jpg}
+		\caption{Fallo total. No detectó la placa.}
+		\label{fig:det_fail2}
+	\end{subfigure}
+
+	\begin{subfigure}[b]{0.45\textwidth}
+		\centering
+		\includegraphics[width=\linewidth]{/home/akai/Pictures/IMG_20250625_102611_753.jpg}
+		\caption{Fallo parcial. Detectó una placa, pero no la otra.}
+		\label{fig:det_fail3}
+	\end{subfigure}
+	\hfill
+	\begin{subfigure}[b]{0.45\textwidth}
+		\centering
+		\includegraphics[width=\linewidth]{/home/akai/Pictures/IMG_20250625_102730_391.jpg}
+		\caption{Caso éxito. Detectó tres placas. Una no estaba etiquetada.}
+		\label{fig:det_success}
+	\end{subfigure}
+
+	\caption{Ejemplos de detección de placas}
+	\label{fig:eje_det}
+\end{figure}
+
+\section{Reconocimiento de caracteres}
+
+\subsection{Curvas de entrenamiento}
+
+\begin{figure}[H]
+	\centering
+	\begin{subfigure}[b]{0.45\textwidth}
+		\centering
+		\includegraphics[width=\linewidth]{/home/akai/Downloads/train_loss.png}
+		\caption{Pérdida durante el entrenamiento}
+		\label{fig:train_loss}
+	\end{subfigure}
+	\hfill
+	\begin{subfigure}[b]{0.45\textwidth}
+		\centering
+		\includegraphics[width=\linewidth]{/home/akai/Downloads/val_loss.png}
+		\caption{Pérdida durante validación}
+		\label{fig:val_loss}
+	\end{subfigure}
+
+	\begin{subfigure}[b]{0.45\textwidth}
+		\centering
+		\includegraphics[width=\linewidth]{/home/akai/Downloads/train_plate_acc.png}
+		\caption{Precisión durante el entrenamiento}
+		\label{fig:train_accuracy}
+	\end{subfigure}
+	\hfill
+	\begin{subfigure}[b]{0.45\textwidth}
+		\centering
+		\includegraphics[width=\linewidth]{/home/akai/Downloads/val_plate_acc.png}
+		\caption{Precisión durante validación}
+		\label{fig:val_accuracy}
+	\end{subfigure}
+
+	\caption{Curvas de aprendizaje del modelo OCR}
+	\label{fig:learning_curves_ocr}
+\end{figure}
+
+\begin{figure}[H]
+	\begin{subfigure}[b]{0.5\textwidth}
+		\centering
+		\includegraphics[width=\linewidth]{/home/akai/Downloads/hypr_plate2val_acc.png}
+		\caption{Hiperparámetros de imagen contra precisión en validación}
+		\label{fig:hypr_plate2val}
+	\end{subfigure}
+	\begin{subfigure}[b]{0.5\textwidth}
+		\centering
+		\includegraphics[width=\linewidth]{/home/akai/Downloads/hypr_model2val_acc.png}
+		\caption{Hiperparámetros del modelo contra precisión en validación}
+		\label{fig:hypr_model2val}
+	\end{subfigure}
+	\begin{subfigure}[b]{0.5\textwidth}
+		\centering
+		\includegraphics[width=\linewidth]{/home/akai/Downloads/hypr_train2val_acc.png}
+		\caption{Hiperparámetros del entrenamiento contra precisión en validación}
+		\label{fig:hypr_train2val}
+	\end{subfigure}
+	\caption{Optimización de hiperparámetros}
+	\label{fig:hypr_opt}
+\end{figure}
+
+\subsection{Ejemplo de reconocimiento}
+
+\begin{figure}[H]
+	\centering
+	\begin{subfigure}[b]{0.45\textwidth}
+		\centering
+		\includegraphics[width=\linewidth]{/home/akai/Pictures/Plate recognition_screenshot_8.png}
+		\caption{Caso de éxito}
+	\end{subfigure}
+	\hfill
+	\begin{subfigure}[b]{0.45\textwidth}
+		\centering
+		\includegraphics[width=\linewidth]{/home/akai/Pictures/Plate recognition_screenshot_18.png}
+		\caption{Caso de éxito con código vertical}
+	\end{subfigure}
+
+	\begin{subfigure}[b]{0.45\textwidth}
+		\centering
+		\includegraphics[width=\linewidth]{/home/akai/Pictures/Plate recognition_screenshot_5.png}
+		\caption{Caso de fallo en un carácter}
+	\end{subfigure}
+	\hfill
+	\begin{subfigure}[b]{0.45\textwidth}
+		\centering
+		\includegraphics[width=\linewidth]{/home/akai/Pictures/Plate recognition_screenshot_7.png}
+		\caption{Caso de fallo completo (caso extremo)}
+	\end{subfigure}
+
+	\caption{Ejemplos de reconocimiento de placa}
+	\label{fig:eje_ocr}
+\end{figure}
+
+\section{Integración en prototipo de App}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=\linewidth]{/home/akai/Pictures/app_screenshot.png}
+	\caption{Interfaz de la App}
+	\label{fig:app_interface}
+\end{figure}
+
+\end{document}

@@ -1,16 +1,19 @@
 from PIL import Image
 import argparse
+import numpy as np
+if not hasattr(np, "float"):
+    np.float = float
 import augly.image as imaugs
-from numpy import append
 from plate_generator import generate_plate
+import uuid
 
 import os
 import random
 
 def get_random_pattern():
     patterns = [
-        "256-nn",
-        "256-nnn",
+        "265-nn",
+        "265-nnn",
         "cl-nnnnnn",
         "d-nnn",
         # "vh-nn",
@@ -63,15 +66,16 @@ quantityOfImages:int = args.quantity
 save2Directory:str = ""
 
 os.makedirs(args.save_directory, exist_ok=True)
-os.makedirs(os.path.join(args.save_directory, "images/train"), exist_ok=True)
+os.makedirs(os.path.join(args.save_directory, "images"), exist_ok=True)
 
 ########################## MAIN PROGRAM ###################################
 for index in range(args.quantity):
     newImage, chars = generate_plate(plate_code=get_random_pattern(), mode="exact", augment=args.augmented_plates)
     if args.augmented_data:
         newImage = augmentData(newImage)
-    plate_name = f"synthetic_plate_{index}.png"
-    newImage.save(os.path.join(args.save_directory, "images/train", plate_name))
-    with open(os.path.join(args.save_directory, "train.csv"), "a") as f:
-        f.write(f"{plate_name},{chars}\n")
+    unique_id = str(uuid.uuid4())[:8]
+    plate_name = f"synthetic_plate_{unique_id}.png"
+    newImage.save(os.path.join(args.save_directory, "images", plate_name))
+    with open(os.path.join(args.save_directory, "annotations.csv"), "a") as f:
+        f.write(f"images/{plate_name},{chars}\n")
 

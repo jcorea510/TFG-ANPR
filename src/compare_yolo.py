@@ -10,8 +10,8 @@ os.makedirs(out_dir, exist_ok=True)
 
 models = {
     "new_model": "runs/yolo_plates/weights/best.pt",
-    "old_model": "modelo_placas.pt",
-    "pretrained": "yolo11n.pt",
+    "old_model": "modelos/yolo/modelo_placas.pt",
+    "pretrained": "modelos/yolo/yolo11n.pt",
 }
 
 for name, path in models.items():

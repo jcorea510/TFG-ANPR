@@ -1,10 +1,16 @@
+# directories with compiled programs and generated file
 src/__pycache__
 src/dataset/
 src/font/
 src/runs/
 src/sources/
+src/wandb/
+src/logs/
+
+# temporary files for cache and loaders
 doc/cronograma/*aux
 doc/cronograma/*log
+doc/cronograma/*out
 doc/cronograma/*pdf
 doc/cap1/*aux
 doc/cap1/*log
@@ -18,3 +24,13 @@ doc/cap1/*.run.xml
 doc/cap1/*.toc
 doc/cap1/*.todo
 doc/cap1/*.out
+
+# programs for experiments
+src/yolo_fail_filter.py
+src/slurm_lpd_eval.sh
+src/slurm_lpd_compare.sh
+src/slurm_lpr_train_*.sh
+src/models/ocr/cct_xs_v1_global_model_config*
+src/models/ocr/cct_xs_v1_global_plate_config*
+src/models/ocr/*csv
+doc/cronograma/*ods
