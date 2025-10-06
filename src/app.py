@@ -3,6 +3,7 @@ import cv2
 import numpy as np
 import keras
 import argparse
+import time
 
 from fast_plate_ocr.train.model.config import load_plate_config_from_yaml
 from fast_plate_ocr.train.utilities import utils
@@ -124,6 +125,7 @@ def video_mode(video_path, yolo_model, recognizer, font_params):
     
     frame_count = 0
     plates_detected_count = 0
+    total_time = 0.0
     
     while True:
         ret, frame = cap.read()
@@ -131,13 +133,21 @@ def video_mode(video_path, yolo_model, recognizer, font_params):
             print("End of video or failed to read frame")
             break
         
+        start_time = time.time()
         frame_count += 1
         frame = cv2.resize(frame, (1080, 720))
         processed_frame, plates_detected = process_frame(frame, yolo_model, recognizer, font_params)
         
         if plates_detected:
             plates_detected_count += 1
-        
+
+        frame_time = time.time() - start_time
+        total_time += frame_time
+        fps = 1.0 / frame_time if frame_time > 0.0 else 0.0
+
+        print(f"Frame {frame_count}: {frame_time*1000:.1f} ms ({fps:.2f} FPS) | Plate detected: {plates_detected}")
+        cv2.putText(processed_frame, f"{fps:.1f} FPS", (950, 60), font_params[0], 0.6, (255, 255, 255), 2)
+
         # Add status information to frame
         status_text = "PLATE DETECTED!" if plates_detected else "Scanning..."
         status_color = (0, 255, 0) if plates_detected else (0, 255, 255)
@@ -170,6 +180,15 @@ def video_mode(video_path, yolo_model, recognizer, font_params):
     cv2.destroyAllWindows()
     print(f"Video processing complete. Total frames: {frame_count}, Frames with plates: {plates_detected_count}")
 
+    if frame_count > 0:
+        avg_time = total_time / frame_count
+        avg_fps = 1.0 / avg_time if avg_time > 0 else 0
+        print(f"\n--- Desempeño promedio ---")
+        print(f"Frames procesados: {frame_count}")
+        print(f"Latencia promedio por cuadro: {avg_time*1000:.1f} ms")
+        print(f"Velocidad promedio: {avg_fps:.2f} FPS")
+        print(f"Frames con detección de placa: {plates_detected_count} ({(plates_detected_count/frame_count)*100:.1f}%)")
+
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='License Plate Recognition System')
     parser.add_argument('mode', choices=['image', 'video'], 
@@ -178,7 +197,7 @@ if __name__ == "__main__":
                        help='Input file path (image/video) or "webcam" for camera')
     parser.add_argument('--yolo-model', default='models/yolo/best.pt',
                        help='Path to YOLO model (default: models/yolo/best.pt)')
-    parser.add_argument('--ocr-model', default='models/ocr/ckpt-epoch_52-acc_0.914.keras',
+    parser.add_argument('--ocr-model', default='models/ocr/ckpt-epoch_58-acc_0.913.keras',
                        help='Path to OCR model (default: models/ocr/ckpt-epoch_52-acc_0.914.keras)')
     parser.add_argument('--config', default='models/ocr/plate_config.yaml',
                        help='Path to plate config file (default: models/ocr/plate_config.yaml)')

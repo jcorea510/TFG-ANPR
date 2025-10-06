@@ -22,6 +22,7 @@ PATTERNS = {
     "d-nnn":      "nnn",
     "vh-nn":      "nn",
     "vh-nnn":     "nnn",
+    "m-nnnnn":    "nnnnn",
     "m-nnnnnn":   "nnnnnn",
     "m-nnn/nnn":  "nnnnnn",
     "lll-nnn":    "lll-nnn",
@@ -33,6 +34,7 @@ CODE_TO_FOLDER = {
     "265-nn": "tec_vehicle_2char",
     "d": "disabled",
     "cl": "lightweight_charger",
+    "m-nnnnn": "motorbike_5char",
     "m": "motorbike",
     "vh": "historic_vehicle",
     "lll": "private_vehicle_7char",  # Adjust if different
@@ -46,6 +48,7 @@ CODE_EXTRACT = {
     "d-nnn":      "D_",
     "vh-nn":      "VH_",
     "vh-nnn":     "VH_",
+    "m-nnnnn":    "M_",
     "m-nnnnnn":   "M_",
     "m-nnn/nnn":  "M_",
     "lll-nnn":    "",

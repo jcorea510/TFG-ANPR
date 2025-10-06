@@ -1,16 +1,56 @@
 \chapter{Conclusiones}
+\label{ch:conclusiones}
 
-Las conclusiones no son un resumen de lo realizado sino a lo que ha llevado el
-desarrollo de la tesis, no perdiendo de vista los objetivos planteados desde
-el principio y los resultados obtenidos.  En otras palabras, qué se concluye o
-a qué se ha llegado después de realizado la tesis de maestría.  Un error
-común es ``concluir'' aspectos que no se desarrollaron en la tesis, como
-observaciones o afirmaciones derivadas de la teoría directamente.  Esto último
-debe evitarse.
+El sistema propuesto integra dos modelos basados en aprendizaje profundo
+---YOLO para la detección de placas vehiculares y Fast-Plate-OCR para el reconocimiento óptico de caracteres---,
+evitando así las limitaciones de los sistemas tradicionales basados en segmentación de caracteres. 
+La integración en un único flujo de procesamiento permitió validar el correcto funcionamiento del sistema completo,
+desde la detección hasta el reconocimiento textual.
 
-Es fundamental en este capítulo hacer énfasis y puntualizar los
-aportes específicos del trabajo.
+Los resultados experimentales demuestran un desempeño sobresaliente en ambos módulos principales. 
+El detector YOLO alcanzó una precisión promedio del 93.5\%, y un mAP@0.5 de 0.946,
+superando holgadamente el criterio de mejora mínima del 3\%, respecto al modelo base. 
+Por su parte, el reconocedor de placas logró una precisión del 98.4\%,
+superando en más de 90 puntos porcentuales al modelo base (3.7\,\%). 
+Estos resultados evidencian la efectividad del entrenamiento con datos aumentados y el diseño modular del sistema.
 
-Es usual concluir con lo que queda por hacer, o sugerencias para mejorar los
-resultados.
+En cuanto al desempeño operativo del sistema integrado,
+las pruebas en video mostraron una latencia promedio de 308.4 ms por cuadro y
+una velocidad de 3.24 FPS en una máquina sin aceleración por GPU. 
+Aunque este rendimiento no permite ejecución en tiempo real, 
+es adecuado para tareas de análisis fuera de línea o en sistemas con baja frecuencia de captura.
+
+Se prevé que el uso de modelos optimizados en formato \texttt{ONNX} y
+hardware con soporte CUDA incremente significativamente la velocidad del sistema.
+
+En términos generales, el desarrollo permitió cumplir los objetivos planteados:
+diseñar, entrenar e integrar un sistema robusto de detección y
+reconocimiento de placas vehiculares, superando ampliamente las métricas base en precisión y exactitud completa.
+
+\subsection{Recomendaciones}
+Este sistema, sin embargo; presenta diversas limitaciones que,
+si se desea utilizar en la implementación posterior del sistema gestión vehicular, es recomendable abordar.
+Con la escasa cantidad de datos disponibles la validación del modelo 
+de detección de placas puede estar sesgada, haciendo necesario incrementar
+la cantidad de datos disponibles; y en la misma línea, en 
+la sección de evaluación de fallos se encontró que el desempeño
+de los sistemas de detección y reconocimiento de placas
+se encuentra afectado debido a un pobre etiqueta de datos,
+por lo que conviene revisar las etiquetas del conjunto de datos empleado.
+Por otro lado, en lo que respecta al reconocimiento de placas, 
+en el conjunto de datos no se encuentran todos los tipos de placas vehiculares de Costa Rica,
+esto impone limitantes a los escenarios donde el sistema puede ser utilizado,
+es necesario, por lo tanto, no solo enriquecer el conjunto de datos
+con automóviles que tengan más tipos de placas diferentes, sino 
+también hacer más robusto el programa de generación sintética de placas
+de entrenamiento, para que sea capaz de generar esas placas.
+Finalmente, en la integración del sistema completo, conviene
+evaluar el rendimiento con el sistema optimizado y en el hardware final 
+donde se ejecutará la aplicación.
+
+En síntesis, el sistema propuesto constituye una base sólida para aplicaciones 
+prácticas de reconocimiento automático de placas vehiculares,
+demostrando mejoras sustanciales respecto a modelos previos y
+abriendo la posibilidad de futuras extensiones hacia escenarios en tiempo real o
+sistemas inteligentes de gestión vehicular.
 

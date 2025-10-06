@@ -3,7 +3,7 @@
 
 \section{Generación sintética de imágenes}
 
-La red neuronal end-to-end tiene la desventaja de requerir grandes cantidades de datos
+Los sistemas de extremo a extremo tiene la desventaja de requerir grandes cantidades de datos
 para conseguir resultados con bajo error de entrenamiento y generalización;
 habitualmente en el rango de 10 mil - 50 mil fotografías. 
 En el tiempo disponible para la ejecución del proyecto no es posible 
@@ -31,81 +31,286 @@ muestran en la tabla \ref{tab:combinaciones-placas},
 y sus características en \ref{tab:caracteristicas-placas}.
 
 \begin{table}[H]
-	\centering
-	\begin{tabular}{|c|c|}
-		\hline
-			Tipo & Combinación \\
-		\hline
-			Particular & NNNNNN \\
-		\hline
-			Particular & LLL-NNN \\
-		\hline
-			TEC & 256 | NN \\
-		\hline
-			TEC & 256 | NNN \\
-		\hline
-			Carga ligera & CL | NNNNNN \\
-		\hline
-			Discapacitado & D-NNN \\
-		\hline
-			Motocicleta & M NNNNNN \\
-		\hline
-			Motocicleta & M $\frac{\text{NNN}}{\text{NNN}}$ \\
-		\hline
-	\end{tabular}
-	\caption{Posible combinaciones de caracteres en placas costarricenses.}
-	\label{tab:combinaciones-placas}
+    \centering
+    \begin{tabular}{ll}
+        \toprule
+        \textbf{Tipo} & \textbf{Combinación} \\
+        \midrule
+        Particular    & NNNNNN \\
+        Particular    & LLL-NNN \\
+        TEC           & 265\,|\,NN \\
+        TEC           & 265\,|\,NNN \\
+        Carga ligera  & CL\,|\,NNNNNN \\
+        Discapacitado & D-NNN \\
+        Motocicleta   & M\,NNNNNN \\
+        Motocicleta   & M$\frac{\text{NNN}}{\text{NNN}}$ \\
+        \bottomrule
+    \end{tabular}
+    \caption{Posibles combinaciones de caracteres en placas costarricenses.}
+    \label{tab:combinaciones-placas}
 \end{table}
 
 \begin{table}[H]
-	\centering
-	\begin{tabular}{|c|c|c|}
-		\hline
-			Código & Color placas & Color caracteres \\
-		\hline
-			 & Blanco & Azul \\
-		\hline
-			256 & Blanco & Verde \\
-		\hline
-			CL & Blanco & Rojo \\
-		\hline
-			 D & Blanco & Azul \\
-		\hline
-			 M & Blanco & Azul \\
-		\hline
-	\end{tabular}
-	\caption{Características de placas costarricenses.}
-	\label{tab:caracteristicas-placas}
+    \centering
+    \begin{tabular}{lcc}
+        \toprule
+        \textbf{Código} & \textbf{Color de placa} & \textbf{Color de caracteres} \\
+        \midrule
+        (vacío) & Blanco & Azul \\
+        265      & Blanco & Verde \\
+        CL       & Blanco & Rojo \\
+        D        & Blanco & Azul \\
+        M        & Blanco & Azul \\
+        \bottomrule
+    \end{tabular}
+    \caption{Características de placas costarricenses.}
+    \label{tab:caracteristicas-placas}
 \end{table}
 
 Se producen los datos utilizando plantillas de placas reales y la fuente tipográfica real,
 realizando recortes de los caracteres y dejando plantillas lo más limpias posibles.
-Por ejemplo, las mostradas en Fig. \ref{fig:caracteres-full-azul} y \ref{fig:plantillas-full-blanco}.
 Mediante software se crean placas aleatorias de forma sistemática,
-tal como indica el diagrama de flujo \ref{fig:diagrama-flujo-generacion-multiples-placas}
-y \ref{fig:diagrama-flujo-generador-placas}. 
+tal como indica el diagrama de flujo \ref{fig:diagrama-flujo-generacion-multiples-placas}. 
 
 \begin{figure}[H]
 	\centering
-	\includegraphics[width=\textwidth]{fig/proy/generacion-de-multiples-imagenes.drawio.png}
+	\includegraphics[width=0.6\textwidth]{fig/proy/generacion-de-multiples-imagenes.drawio.png}
 	\caption{Generación de múltiples imágenes sintéticas}
 	\label{fig:diagrama-flujo-generacion-multiples-placas}
 \end{figure}
 
+Durante el entrenamiento del modelo de reconocimiento de placas, se aplican
+técnicas de aumento de datos (data augmentation) para incrementar la variabilidad
+de las imágenes y mejorar la capacidad de generalización del modelo. El tipo de
+aumento y la intensidad deben ser cuidadosamente seleccionados para evitar
+introducir artefactos que puedan confundir al modelo. Por lo tanto, se seleccionan
+posibles transformaciones y intensidades basadas en las características del conjunto de datos real,
+y luego durante el entrenamiento se realizan experimentos para determinar cuáles combinaciones
+producen mejores resultados. Entre las técnicas de aumento de datos utilizadas se incluyen:
+
+\begin{itemize}
+	\item Rotación: Se aplican rotaciones aleatorias dentro de un rango de -30 a 30 grados.
+	\item Escalado: Se aplican escalados aleatorios dentro de un rango de 70\% a 120\%.
+	\item Cambio de brillo y contraste: Se ajustan aleatoriamente el brillo y el contraste
+		dentro de un rango de -20\% a +20\%.
+	\item Perspectiva: Se aplican transformaciones de perspectiva aleatorias
+		para simular diferentes ángulos de captura.
+	\item Ruido: Se añade ruido gaussiano con una desviación estándar aleatoria entre 0 y 0.05.
+	\item Desenfoque: Se aplica desenfoque gaussiano con un radio aleatorio entre 0 y 1.5 píxeles.
+	\item Pixelado: Se aplica pixelado con un tamaño de bloque aleatorio entre 1 y 5 píxeles.
+	\item Desplazamiento RGB: Se desplazan aleatoriamente los canales de color
+		(R, G, B) dentro de un rango de -10 a +10 unidades.
+	\item Compresión JPEG: Se simula compresión JPEG con una calidad aleatoria entre 55\% y 90\%.
+	\item Aumentado por elemento: Se realiza aumentado de datos individuales por elemento de la placa:
+		caracteres, plantilla, e imagen completa.
+\end{itemize}
+
+Puesto que se puede aplicar aumentado de datos en distintos elementos de la placa, 
+en la rutina de generación de una única placa se especifican puntos de control 
+para decidir de forma aleatoria que aumento aplicar en cada caso \ref{fig:diagrama-flujo-generador-placas}.
+
 \begin{figure}[H]
 	\centering
-	\includegraphics[width=\textwidth]{fig/proy/generacion-de-imagen-sintetica.drawio.png}
+	\includegraphics[width=0.8\textwidth]{fig/proy/generacion-de-imagen-sintetica.drawio.png}
 	\caption{Generación de imagen de placa sintética}
 	\label{fig:diagrama-flujo-generador-placas}
 \end{figure}
 
 \section{Detección y extracción de ubicación de la placa en video e imágenes}
 
-La detección de placas vehiculares en imágenes y video se realiza aplicando ajuste fino 
-a modelos existentes. Se utiliza YOLOv11n.pt como principal, pues esta versión es 
-más rápida y ofrece mejor capacidad de detección que sus predecesores. 
-Se realiza además comparación de métricas con otras versiones de YOLO 
-y con el modelo usado en el primer prototipo presentado en \cite{proyecto_previo}.
+La detección de placas vehiculares en imágenes y video se realiza aplicando ajuste fino (fine tunning)
+a modelos existentes. Se utiliza YOLOv11n, pues de las versiones de YOLO, la versión 11 ofrece
+un buen balance entre precisión y velocidad, es adecuada para aplicaciones en tiempo real,
+y es más precisa y veloz que versiones anteriores como YOLOv5 o YOLOv8 \ref{fig:yolo-comparacion-versiones}.
+Por otro lado, la versión n es la más ligera, lo que facilita su implementación en dispositivos
+con recursos limitados \ref{tab:yolo11-comparacion-complejidad}.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.8\textwidth]{fig/proy/yolo-comparacion-versiones.png}
+	\caption{Comparación de versiones de YOLO \cite{yolo11_ultralytics}.}
+	\label{fig:yolo-comparacion-versiones}
+\end{figure}
+
+\begin{table}[H]
+    \centering
+    \begin{tabularx}{\textwidth}{lXXccc}
+        \toprule
+        \textbf{Modelo} 
+        & \textbf{CPU (ms)} 
+        % & \textbf{T4 TensorRT10 (ms)} 
+		& \textbf{T4 TRT10 (ms)}
+        & \textbf{$mAP^{val}$} 
+        & \textbf{Parámetros (M)} 
+        & \textbf{FLOPS (B)} \\
+        \midrule
+        YOLO11n & $56.1 \pm 0.8$ & $1.5 \pm 0.0$ & 39.5 & 2.6 & 6.5 \\
+        YOLO11s & $90.0 \pm 1.2$ & $2.5 \pm 0.0$ & 47.0 & 9.4 & 21.5 \\
+        YOLO11m & $183.2 \pm 2.0$ & $4.7 \pm 0.1$ & 51.5 & 20.1 & 68.0 \\
+        YOLO11l & $238.6 \pm 1.4$ & $6.2 \pm 0.1$ & 53.4 & 25.3 & 86.9 \\
+        YOLO11x & $462.8 \pm 6.7$ & $11.3 \pm 0.2$ & 54.7 & 56.9 & 194.9 \\
+        \bottomrule
+    \end{tabularx}
+    \caption{Comparación de complejidad entre versiones de YOLO11, usando imágenes de entrada de $640\times640$ píxeles \cite{yolo11_ultralytics}.}
+    \label{tab:yolo11-comparacion-complejidad}
+\end{table}
+
+\subsection{Entrenamiento y evaluación del modelo}
+
+Con la IP de Ultralytics se entrena el modelo. La IP incluye aumentado de datos 
+y especificaciones sobre el tipo y formato de las etiquetas; por lo que el 
+entrenamiento se simplifica a un único bloque \ref{fig:entrenamiento-yolo}.
+
+\begin{figure}[H]
+	\centering
+	% \placeholderimage{0.3\textwidth}
+	\includegraphics[width=\textwidth]{fig/proy/entrenamiento-yolo.drawio.png}
+	\caption{Entrenamiento del modelo de detección de placas}
+	\label{fig:entrenamiento-yolo}
+\end{figure}
+
+% Dado que el conjunto de datos disponible es reducido (750 imágenes), se diseñó una 
+% estrategia experimental que permitiera evaluar el desempeño del modelo de forma 
+% confiable y, al mismo tiempo, comparar diferentes configuraciones de entrenamiento. 
+% Se definieron tres escenarios: (1) entrenamiento únicamente con imágenes de Costa Rica, 
+% (2) entrenamiento con imágenes internacionales y (3) entrenamiento mixto con ambas 
+% fuentes. En todos los casos, la evaluación comparativa entre escenarios se realiza con 
+% un conjunto de prueba fijo de imágenes de Costa Rica, con el fin de medir el desempeño 
+% específicamente en el dominio de interés.  
+
+% Para cada escenario, además de la validación única mediante el conjunto de prueba, 
+% se aplicó validación cruzada k-fold.
+% Esta técnica consiste en dividir el conjunto en k particiones y, en cada 
+% iteración, emplear k-1 particiones para entrenamiento y la restante para validación, 
+% rotando hasta que todas las particiones han sido utilizadas. Con ello se obtiene una 
+% estimación más robusta del desempeño y de la variabilidad del modelo en cada escenario, 
+% sin que los resultados de los distintos experimentos queden sesgados por diferencias en 
+% las particiones. De esta forma, la validación única permite la comparación directa entre 
+% experimentos, mientras que la validación cruzada se utiliza como análisis de robustez 
+% interna de cada configuración de entrenamiento.
 
 \section{Reconocimiento de número de placa}
+
+La etapa de reconocimiento de números de placas se realiza también mediante ajuste fino 
+a modelos existentes. De entre distintas versiones de modelos y arquitecturas se 
+decide por utilizar \textbf{fast-plate-ocr}. Los modelos que ofrece son ligeros y rápidos;
+además de que el entrenamiento y resulta bastante simple de realizar. Incluso 
+es posible entrenar el modelo desde cero. 
+Por otro lado, este proyecto es reciente y se encuentra constantemente en actualización.
+A diferencia de otras arquitecturas como LPRNet, la cual es de hace 6 años aproximadamente
+y es complejo o incluso imposible de ejecutar con las nuevas versiones de bibliotecas 
+disponibles \cite{zherzdev2018lprnetlicenseplaterecognition}.
+CLPRNet permite realizar el entrenamiento y el reconocimiento de
+placa en una red extremo a extremo completa; sin embargo, este requiere un etiquetado de datos
+de entrenamiento y validación mucho más completo, incluyendo parámetros como los vértices
+en los que se ubica la placa y un número indicativo del tipo de placa (las variantes
+de placas existentes) \cite{clprnet-paper}. Usar esta red implica, por lo tanto, reetiquetar los datos disponibles
+y cambiar la estrategia de generación sintética de imágenes.
+Finalmente, se consideró la opción de utilizar PaddleOCR; sin embargo, al igual
+que LPRNet, esta red se encuentra desactualizada y poder ejecutarla con los nuevos paquetes
+de PyTorch y GPU de NVIDIA no es sencillo e incluso imposible.
+
+Fast plate OCR cuenta con dos modelos pre entrenados. En pruebas de concepto inicial
+el modelo más pequeño (XS) resultó en un mejor compromiso entre precisión y velocidad de procesamiento,
+por lo que se escoge el modelo base para realizar los experimentos.
+El reporte de desempeño brindado por los desarrolladores del modelo base se muestra en la tabla 
+\ref{tab:ocr-comparacion-complejidad}, el cual fue evaluado en el hardware NVIDIA RTX 3090 GPU.
+
+\begin{table}[H]
+    \centering
+    \begin{tabular}{lccc}
+        \toprule
+        \textbf{Modelo} & \textbf{Tamaño} & \textbf{Latencia (ms)} & \textbf{Placas/segundo} \\
+        \midrule
+        cct\_s\_v1\_global\_model  & S  & 0.5877 & 1701.63 \\
+        cct\_xs\_v1\_global\_model & XS & 0.3232 & 3094.21 \\
+        \bottomrule
+    \end{tabular}
+    \caption{Comparación de desempeño base del OCR \cite{hassani2021escaping}.}
+    \label{tab:ocr-comparacion-complejidad}
+\end{table}
+
+Para el ajuste fino del modelo se consideran distintos hiperparámetros,
+entre ellos los asociados al optimizador (tasa de aprendizaje y decaimiento de peso),
+formato de imagen (color y resolución), tamaño de la red
+(número de capas, cabezas de atención, dimensión de proyección) y
+regularización (dropout en atención y MLP).
+Los rangos específicos evaluados se presentan en el capítulo de resultados.
+
+% En este caso, se realiza optimización de hiperparámetros para determinar con qué configuración 
+% se obtienen las mejores métricas de desempeño. Los hiperparámetros incluyen el tipo e
+% intensidad de aumento de datos, el formato de imágenes de entrada (tamaño y color),
+% parámetros de optimizador, y parámetros de tamaño de red.
+% Antes de iniciar el entrenamiento se seleccionan los hiperparámetros y se entrena 
+% una cantidad determinada de épocas \ref{fig:entrenamiento-ocr}.
+%
+% A continuación se listan los principales hiperparámetros considerados en los experimentos:
+%
+% \begin{enumerate}
+% 	\item \textbf{Optimizador}
+% 	\begin{enumerate}
+% 		\item \textbf{Tasa de aprendizaje:} valores demasiado bajos provocan aprendizaje lento,
+% 			mientras que valores muy altos impiden la convergencia.  
+% 		\textit{Rango: } 0.0001 – 0.01.
+% 		\item \textbf{Decaimiento de peso:} regularización que penaliza los pesos grandes para prevenir sobreajuste.  
+% 		\textit{Rango: } 0.0001 – 0.01.
+% 	\end{enumerate}
+%
+% 	\item \textbf{Imágenes}
+% 	\begin{enumerate}
+% 		\item \textbf{Color:} el uso de RGB puede aportar información útil,
+% 			aunque también puede ser sensible a sombras o decoloración.  
+% 		\textit{Opciones: } RGB – escala de grises.
+% 		\item \textbf{Resolución:} un mayor número de píxeles reduce la pérdida de información,
+% 			pero incrementa el área a analizar.  
+% 		\textit{Ancho y alto: } XX – XX píxeles.
+% 	\end{enumerate}
+%
+% 	\item \textbf{Tamaño de red}
+% 	\begin{enumerate}
+% 		\item \textbf{Capas:} profundidad del modelo.  
+% 		\textit{Rango: } 1 – 4.
+% 		\item \textbf{Cabezas de atención:} número de cabezas empleadas en los bloques de autoatención.  
+% 		\textit{Rango: } XX.
+% 		\item \textbf{Dimensión de proyección:} tamaño del espacio de representación.  
+% 		\textit{Rango: } 30 – 100.
+% 		\item \textbf{Función de activación:}  
+% 		\textit{Opciones: } ReLU – GeLU.
+% 		\item \textbf{Dropout en atención:} fracción de unidades descartadas para regularización.  
+% 		\textit{Rango: } 0.04 – 0.26.
+% 		\item \textbf{Dropout en MLP:} fracción de unidades descartadas en el bloque feedforward.  
+% 		\textit{Rango: } 0.01 – 0.26.
+% 	\end{enumerate}
+% \end{enumerate}
+
+\begin{figure}[H]
+	\centering
+	% \placeholderimage{0.3\textwidth}
+	\includegraphics[width=\textwidth]{fig/proy/entrenamiento-ocr.drawio.png}
+	\caption{Rutina de entrenamiento del OCR}
+	\label{fig:entrenamiento-ocr}
+\end{figure}
+
+\section{Integración de la solución}
+
+Luego de determinar el mejor modelo de detección de placas,
+y el mejor modelo de reconocimiento de placas se integran los modelos en una única solución.
+Esta solución es capaz de procesar imagen y video (ya sea mediante cámara o pre grabado). 
+Una vez obtenida la imagen se extraen dos puntos (Xmin, Ymin) y (Xmax, Ymax),
+que se usan para definir la región donde se recorta la imagen. 
+Esta imagen recortada se suministra el modelo de reconocimiento de placas, con 
+lo cual se extrae confidencia y el texto reconocido. 
+Se filtran las imágenes con baja confidencia. 
+Finalmente, se dibuja la región de recorte en la imagen original
+y el texto encima de la región de recorte \ref{fig:integracion-app}.
+Este simple diseño es principalmente un prototipado para evaluar el correcto 
+funcionamiento y viabilidad del sistema propuesto.
+
+\begin{figure}[H]
+	\centering
+	% \placeholderimage{0.3\textwidth}
+	\includegraphics[width=0.8\textwidth]{fig/proy/flujo-applicacion.drawio.png}
+	\caption{Diagrama de flujo de funcionamiento de aplicación}
+	\label{fig:integracion-app}
+\end{figure}
 

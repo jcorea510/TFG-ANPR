@@ -12,5 +12,5 @@ eval "$(micromamba shell hook --shell bash)"
 micromamba activate /work/jcorea/myenv310
 
 echo "Starting synthetic data generation on $(hostname) at $(date)"k
-python data_syntesis.py -q 2000 -s dataset/fast_ocr/train/ -a -r
+python data_syntesis.py -q 60 -s dataset/fast_ocr/train/
 

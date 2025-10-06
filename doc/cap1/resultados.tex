@@ -1,7 +1,12 @@
 \chapter{Resultados y análisis}
+\label{ch:resultado}
 
 \section{Características de las placas sintéticas generadas}
-Algunos ejemplos de placas generadas son mostradas en Fig. \ref{fig:ejemplo-placas-sinteticas}
+Con el fin de suplir la falta de datos reales se generan imágenes sintéticas
+de placas vehiculares. Estas imágenes son usadas como base para el entrenamiento 
+del modelo de reconocimiento de placas (OCR), mientras que la validación posterior
+se realiza con imágenes reales. A continuación, se muestran algunos
+ejemplos de placas generadas en figura \ref{fig:ejemplo-placas-sinteticas}
 
 \begin{figure}[H]
     \centering
@@ -42,7 +47,28 @@ Algunos ejemplos de placas generadas son mostradas en Fig. \ref{fig:ejemplo-plac
 	\label{fig:ejemplo-placas-sinteticas}
 \end{figure}
 
+En adición, para abordar la alta variabilidad de condiciones de 
+iluminación, deformación, deterioro, perspectiva, ángulo de visión, ruido,
+calidad de la imagen, entre otros se realiza aumento de datos con albumentations.
+El aumento de datos facilita la transferencia al dominio real.
+Además, contribuye a mejorar la robustez del modelo 
+frente a condiciones diversas en las imágenes reales de validación. 
+Para ilustrar el funcionamiento del sistema de aumentado de datos se
+muestran ejemplos en la figura \ref{fig:ejemples-aumento-datos}.
+
+\begin{figure}[H]
+	\centering
+	\placeholderimage{0.3\textwidth}
+	\caption{Ejemplos de aumentado de datos}
+	\label{fig:ejemples-aumento-datos}
+\end{figure}
+
 \section{Comparación de desempeño de detección de placas}
+
+En esta sección se presentan los resultados de los experimentos realizados 
+para la etapa de detección de placas, evaluando mediante métricas mostradas en la sección XX.	
+
+\subsection{Validación única (train/val split)}
 
 Se realizaron diferentes experimentos para comparar el desempeño de
 diferentes modelos de detección de placas. Los experimentos se
@@ -51,47 +77,271 @@ un único conjunto de imágenes de prueba. Los conjuntos de
 entrenamiento fueron:
 
 \begin{itemize}
-\item \textbf{Conjunto 1:} 600 imágenes de vehículos costarricenses para entrenar
-	y 150 imágenes de vehículos costarricenses para validar.
-\item \textbf{Conjunto 2:} 1200 imágenes de vehículos colombianos para entrenar
-	y 150 imágenes de vehículos costarricenses para validar.
-\item \textbf{Conjunto 3:} 1200 imágenes, combinando vehículos colombianos y costarricenses, para entrenar
-	y 150 imágenes de vehículos costarricenses para validar.
+	\item \textbf{Conjunto 1 (CR):} 600 imágenes de vehículos costarricenses para entrenar
+	y 300 imágenes de vehículos costarricenses para validar.
+\item \textbf{Conjunto 2 (CO):} 1200 imágenes de vehículos colombianos para entrenar
+	y 300 imágenes de vehículos costarricenses para validar.
+\item \textbf{Conjunto 3 (Mixto):} 1200 imágenes, combinando vehículos colombianos y costarricenses, para entrenar
+	y 300 imágenes de vehículos costarricenses para validar.
 \end{itemize}
 
+\begin{table}[H]
+	\centering
+	\begin{tabular}{lcccc}
+		\toprule
+		\textbf{Conjunto} & \textbf{Precisión} & \textbf{Exhaustividad}  & \textbf{mAP50} \\
+		\midrule
+		Conjunto 1 (CR)    & 0.873 & 0.803 & 0.873 \\
+		Conjunto 2 (CO)    & 0.870 & 0.653 & 0.774 \\
+		Conjunto 3 (Mixto) & 0.935 & 0.806 & 0.946 \\
+		\bottomrule
+	\end{tabular}
+	\caption{Resultados de los experimentos con YOLO para detección de placas con validación única.}
+	\label{tab:yolo-metrics-unica}
+\end{table}
+
+Los resultados cuantitativos de los tres experimentos se resumen en la Tabla~\ref{tab:yolo-metrics-unica}. 
+De acuerdo con los valores obtenidos, el modelo entrenado con el \textbf{Conjunto 1 (CR)}
+alcanzó una precisión promedio de 87.3\% y una exhaustividad (recall) de 80.3\%, con un mAP de 0.870. 
+En la matriz de confusión (Figura~\ref{fig:yolo-confusion-exp1})
+se observa que la mayoría de las placas fueron correctamente detectadas (verdaderos positivos = 322),
+aunque aún se presentan 64 falsos negativos y 65 falsos positivos. 
+Esto indica que, si bien el modelo logra detectar la mayoría de placas,
+todavía existen casos en los que no identifica la región correctamente.
+
 \begin{figure}[H]
-	% \includegraphics[width=\textwidth]{fig/proy/confusion_matrix-new-model.png}
-	\placeholderimage{0.3\textwidth}
-	\caption{Matriz de confusión del modelo experimento con conjunto 1}
-	\label{fig:yolo-confusion-exp1}
+    \centering
+    \begin{subfigure}[t]{\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{fig/proy/confusion_matrix-exp1.png}
+        \caption{Matriz de confusión del modelo experimento con conjunto 1}
+        \label{fig:yolo-confusion-exp1}
+    \end{subfigure}%
+
+    \begin{subfigure}[t]{\textwidth}
+        \centering
+        \includegraphics[width=0.8\linewidth]{fig/proy/metricas-curvas-exp1.png}
+        \caption{Métricas del modelo experimento con conjunto 1}
+        \label{fig:yolo-metricas-exp1}
+    \end{subfigure}
+\end{figure}
+
+El \textbf{Conjunto 2 (CO)}, entrenado únicamente con imágenes de vehículos colombianos,
+obtuvo una precisión de 87.0\% y una exhaustividad de 65.3\%, con un mAP de 0.774. 
+La matriz de confusión (Figura~\ref{fig:yolo-confusion-exp2})
+muestra un mayor número de errores de clasificación en comparación con el Conjunto 1, 
+reflejando dificultades de generalización al aplicarse sobre el conjunto de prueba costarricense. 
+En particular, se registraron 157 falsos negativos,
+lo cual evidencia que el modelo tiende a omitir la detección en 
+casos donde las placas presentan características distintas a las del conjunto de entrenamiento.
+
+\begin{figure}[H]
+	\centering
+	\begin{subfigure}[t]{\textwidth}
+		\centering
+		\includegraphics[width=\linewidth]{fig/proy/confusion_matrix-exp2.png}
+		\caption{Matriz de confusión del modelo experimento con conjunto 2}
+		\label{fig:yolo-confusion-exp2}
+	\end{subfigure}
+
+	\begin{subfigure}[t]{\textwidth}
+		\centering
+		\includegraphics[width=0.8\linewidth]{fig/proy/metricas-curvas-exp2.png}
+		\caption{Métricas del modelo experimento con conjunto 2}
+		\label{fig:yolo-metricas-exp2}
+	\end{subfigure}
+\end{figure}
+
+Por último, el \textbf{Conjunto 3 (Mixto)} alcanzó los mejores resultados generales,
+con una precisión de 93.5\%, una exhaustividad de 80.6\% y un mAP de 0.946. 
+En la matriz de confusión (Figura~\ref{fig:yolo-confusion-exp3})
+se observa un incremento en los verdaderos positivos (312),
+acompañado de una reducción de falsos positivos (45), pero un ligero aumento de falsos negativos (74). 
+Esto evidencia que la inclusión de datos de ambos dominios permitió al modelo aprender
+representaciones más robustas y generalizables,
+lo cual se tradujo en un mejor equilibrio entre precisión y exhaustividad.
+
+\begin{figure}[H]
+	\centering
+	\begin{subfigure}[t]{\textwidth}
+		\centering
+		\includegraphics[width=\linewidth]{fig/proy/confusion_matrix-exp3.png}
+		\caption{Matriz de confusión del modelo experimento con conjunto 3}
+		\label{fig:yolo-confusion-exp3}
+	\end{subfigure}
+
+	\begin{subfigure}[t]{\textwidth}
+		\centering
+		\includegraphics[width=0.8\linewidth]{fig/proy/metricas-curvas-exp3.png}
+		\caption{Métricas del modelo experimento con conjunto 3}
+		\label{fig:yolo-metricas-exp3}
+	\end{subfigure}
+\end{figure}
+
+En síntesis, los resultados muestran que el entrenamiento con datos mixtos 
+ofrece un desempeño superior respecto a los conjuntos individuales. 
+El Conjunto 1 presenta un buen rendimiento en datos costarricenses,
+pero limitado en escenarios más diversos. 
+El Conjunto 2 presenta menor capacidad de detección en el dominio local. 
+El Conjunto 3 combina las ventajas de ambos y
+se perfila como la mejor configuración para integrar en el sistema propuesto.
+
+\subsection{Validación cruzada ($k$-fold)}
+
+Para obtener una evaluación más robusta y reducir el sesgo derivado de un único conjunto de validación, 
+se aplicó validación cruzada con $k=5$.  
+En este caso, cada configuración fue entrenada cinco veces, 
+utilizando particiones distintas para entrenamiento y validación.  
+Los resultados reportados corresponden al promedio y la desviación estándar de las métricas principales.
+
+A diferencia del caso anterior, en la validación cruzada no se presenta una única matriz de confusión, 
+pues se generan múltiples modelos (uno por cada fold).  
+Por esta razón, se optó únicamente por mostrar las métricas agregadas, 
+las cuales se resumen en la Tabla~\ref{tab:yolo-metrics-kfold}. 
+
+\begin{table}[H]
+	\centering
+	\begin{tabular}{lcccc}
+		\toprule
+		\textbf{Conjunto} & \textbf{Precisión (\%)} & \textbf{Exhaustividad (\%)}  & \textbf{mAP50} \\
+		\midrule
+		Conjunto 1 (CR)    & 0.920 $\pm$ 0.019 & 0.631 $\pm$ 0.020 &  0.775 $\pm$ 0.015 \\
+		Conjunto 2 (CO)    & 0.871 $\pm$ 0.012 & 0.810 $\pm$ 0.014 &  0.872 $\pm$ 0.014 \\
+		Conjunto 3 (Mixto) & 0.930 $\pm$ 0.014 & 0.784 $\pm$ 0.017 &  0.863 $\pm$ 0.014 \\
+		\bottomrule
+	\end{tabular}
+	\caption{Resultados promedio ($\pm$ desviación estándar) de los experimentos con YOLO para detección de placas
+	con validación cruzada $k=5$.}
+	\label{tab:yolo-metrics-kfold}
+\end{table}
+
+En síntesis, los resultados muestran que el entrenamiento con datos mixtos 
+(\textbf{Conjunto 3}) ofrece un desempeño superior respecto a los conjuntos individuales, 
+tanto en validación única como en validación cruzada. 
+Esto confirma que la combinación de dominios permite obtener un modelo más robusto y generalizable.
+
+Para comprender mejor la capacidad real de detección de placas del modelo 
+es necesario analizar los casos de fallo, ya que esto permite identificar 
+las razones por las cuales la precisión se ve afectada y plantear posibles mejoras.
+Este análisis es principalmente cualitativo y se realiza mediante inspección comparativa
+entre las predicciones del modelo y las etiquetas de referencia,
+tomando como base el mejor modelo (Conjunto 3).
+
+La mayoría de los casos de error corresponden a falsos positivos por ausencia de anotación:
+el modelo detecta una placa, pero en las etiquetas de referencia no existe registro de ella.
+En realidad, estos casos reflejan deficiencias en la anotación de los datos,
+dado que efectivamente hay una placa presente en la imagen.
+Por lo tanto, la predicción es correcta, pero se contabiliza como error debido a la falta de etiqueta,
+lo que afecta artificialmente la métrica de precisión.
+Ejemplos de este tipo de fallos se muestran en la Figura~\ref{fig:yolo-ejemplos-falsos-positivos}.
+
+En menor medida, se identificaron casos de falsos negativos reales,
+donde el modelo no logra detectar una placa presente en la imagen.
+Estos errores corresponden a situaciones adversas, como placas parcialmente ocluidas,
+muy pequeñas debido a la distancia de captura o con iluminación adversa.
+Ejemplos de estos casos se muestran en la Figura~\ref{fig:yolo-ejemplos-falsos-negativos}.
+
+Finalmente, se encontraron muy pocos casos de falsos positivos genuinos,
+en los que el modelo predice una placa en una región donde no existe ninguna.
+Estos errores suelen deberse a patrones visuales similares a los de una placa, 
+como bordes de objetos o elementos rectangulares en los vehículos.
+Un ejemplo de este tipo de fallo se presenta en la Figura~\ref{fig:yolo-ejemplos-falsos-positivos-completo}.
+
+\begin{figure}[H]
+	\centering
+	\begin{subfigure}[t]{0.45\textwidth}
+		\centering
+		\includegraphics[width=\textwidth]{fig/proy/yolo-falso-positivo-engañoso-1.jpg}
+		\caption{Detección de placa falsa positiva en segundo auto blanco}
+	\end{subfigure}
+	\hfill
+	\begin{subfigure}[t]{0.45\textwidth}
+		\centering
+		\includegraphics[width=\textwidth]{fig/proy/yolo-falso-positivo-engañoso-3.jpg}
+		\caption{Detección de placa falsa positiva en auto negro al fondo}
+	\end{subfigure}
+
+	\begin{subfigure}[t]{0.45\textwidth}
+		\centering
+		\includegraphics[width=\textwidth]{fig/proy/yolo-falso-positivo-engañoso-2.jpg}
+		\caption{Detección de placa falsa positiva en auto trasero de la derecha}
+	\end{subfigure}
+	\hfill
+	\begin{subfigure}[t]{0.45\textwidth}
+		\centering
+		\includegraphics[width=\textwidth]{fig/proy/yolo-falso-positivo-engañoso-4.jpg}
+		\caption{Detección de placa falsa positiva en auto de la izquierda}
+	\end{subfigure}
+	\caption{Ejemplos de falsos positivos de detección de placas}
+	\label{fig:yolo-ejemplos-falsos-positivos}
 \end{figure}
 
 \begin{figure}[H]
-	% \includegraphics[width=\textwidth]{fig/proy/confusion_matrix-new-model.png}
-	\placeholderimage{0.3\textwidth}
-	\caption{Matriz de confusión del modelo experimento con conjunto 2}
-	\label{fig:yolo-confusion-exp2}
+	\centering
+	\begin{subfigure}[t]{0.45\textwidth}
+		\centering
+		\includegraphics[width=\textwidth]{fig/proy/yolo-falso-negativo-complejo-1.jpg}
+		\caption{No detección de placa en auto trasero de la izquierda}
+	\end{subfigure}
+	\hfill
+	\begin{subfigure}[t]{0.45\textwidth}
+		\centering
+		\includegraphics[width=\textwidth]{fig/proy/yolo-falso-negativo-complejo-2.jpg}
+		\caption{No detección de placa en auto lejano}
+	\end{subfigure}
+
+	\caption{Ejemplos de falsos negativos de detección de placas}
+	\label{fig:yolo-ejemplos-falsos-negativos}
 \end{figure}
 
 \begin{figure}[H]
-	% \includegraphics[width=\textwidth]{fig/proy/confusion_matrix-new-model.png}
-	\placeholderimage{0.3\textwidth}
-	\caption{Matriz de confusión del modelo experimento con conjunto 3}
-	\label{fig:yolo-confusion-exp3}
+	\centering
+	\begin{subfigure}[t]{0.45\textwidth}
+		\centering
+		\includegraphics[width=\textwidth]{fig/proy/yolo-falso-positivo-confusion.jpg}
+		\caption{Confusión de QR con un placa}
+	\end{subfigure}
+	\caption{Ejemplo de falsos positivos completo}
+	\label{fig:yolo-ejemplos-falsos-positivos-completo}
 \end{figure}
 
-\begin{figure}[H]
-	% \includegraphics[width=\textwidth]{fig/proy/confusion_matrix-new-model.png}
-	\placeholderimage{0.3\textwidth}
-	\caption{Matriz de confusión del modelo base}
-	\label{fig:yolo-confusion-base}
-\end{figure}
+\subsection{Evaluación respecto a modelo base}
 
-El mejor de los modelos fue el conseguido con el experimento XX. 
+Con el fin de validar la mejora del sistema propuesto,
+se compararon los resultados del mejor modelo YOLO (entrenado con el Conjunto 3, mixto)
+frente a un modelo base previamente definido; los cuales el detector de
+placas usado en el proyecto anterior, y YOLO sin ajuste fino. 
+La tabla~\ref{tab:yolo-vs-base} resume las métricas obtenidas.
 
-HACER EL ANÁLISIS DE MÉTRICAS CAR, IOU, ETC
+\begin{table}[H]
+	\centering
+	\begin{tabular}{lcccc}
+		\toprule
+		\textbf{Modelo} & \textbf{Presición} & \textbf{Exhaustividad} & \textbf{mAP} \\
+		\midrule
+		YOLO sin ajuste   & 0 & 0 & 0 \\
+		Modelo base   & 0.811 & 0.703 & 0.814 \\
+		YOLO propuesto (Conjunto 3) & 0.935 & 0.806 & 0.946 \\
+		\bottomrule
+	\end{tabular}
+	\caption{Comparación de desempeño entre el modelo base y el modelo YOLO propuesto.}
+	\label{tab:yolo-vs-base}
+\end{table}
 
-REALIZAR CONCLUSIÓN DE MODELOS YOLO
+Los resultados muestran que el modelo YOLO propuesto logra una mejora significativa respecto al modelo base.  
+En cuanto a la detección de placas, el \textbf{mAP@0.5 aumentó en 0.132} (de 0.814 a 0.946),
+superando ampliamente el umbral de 0.03 establecido como referencia.  
+Asimismo, la \textbf{precisión} y la \textbf{exhaustividad} se incrementaron en 0.124 y 0.103 respectivamente,
+reflejando una mayor capacidad del modelo para localizar y 
+clasificar correctamente las placas en imágenes de distintos dominios.
+
+En conjunto, estos resultados confirman que el modelo YOLO entrenado con datos mixtos
+no solo mejora la detección de las placas, sino que también proporciona un reconocimiento más robusto
+frente a variaciones de iluminación, ángulo y fondo.  
+Esto valida la hipótesis de que la combinación de datos de diferentes fuentes aporta una mejor
+generalización y constituye un avance significativo respecto a la solución inicial.  
+Finalmente, a modo de ejemplo, la figura~\ref{fig:ejemplo-deteccion-placa} 
+muestra algunas imágenes de detección que ilustran el funcionamiento del sistema en esta etapa.
 
 \begin{figure}[H]
 	\includegraphics[width=\textwidth]{fig/proy/ejemplo-deteccion-placas.jpg}
@@ -101,73 +351,529 @@ REALIZAR CONCLUSIÓN DE MODELOS YOLO
 
 \section{Comparación de desempeño en reconocimiento de placas}
 
-En el caso del reconocimiento de caracteres por medio de (OCR) se realizaron
-XX experimentos. En cada experimento se seleccionó un conjunto aleatorio de
-hiperparámetros.
+Para la etapa de reconocimiento de caracteres (OCR) 
+se realizaron en primer lugar experimentos exploratorios con distintos hiperparámetros
+relacionados con la entrada de la imagen, la arquitectura del modelo y el optimizador de entrenamiento.
+El objetivo de esta fase inicial fue identificar un conjunto razonable de parámetros base antes de afinar el sistema.
+
+\subsection{Primera ronda de experimentos: exploración de hiperparámetros}
+
+En total se llevaron a cabo 8 experimentos (incluyendo la línea base), 
+seleccionando combinaciones aleatorias dentro de los rangos de la Tabla~\ref{tab:hiperparam-rangos}.
 
 \begin{table}[H]
-	\begin{tabular}{| c | c |}
-		\hline
-		Parámetro & Rango de prueba \\	
-		\hline
-		XX & XX \\
-		\hline
-	\end{tabular}
+    \centering
+    \begin{tabularx}{0.8\textwidth}{lX}
+        \toprule
+        \textbf{Parámetro} & \textbf{Rango de prueba} \\
+        \midrule
+        Capas & 1 -- 4 \\
+        Cabezas & 1 -- 2 \\
+        Dimensión de proyección & 32, 64, 96 \\
+        Función de activación & gelu, relu \\
+        Caída de atención & 0.05 -- 0.25 \\
+        Caída de MLP & 0.1 -- 0.25 \\
+        Alto de imagen & 32, 64, 96 \\
+        Ancho de imagen & 64, 128, 192 \\
+        Color de imagen & RGB, escala de grises \\
+        Tamaño de lote & 16, 32, 64 \\
+        Decaimiento de pesos & 0.0002 -- 0.01 \\
+        Tasa de aprendizaje & 0.0003 -- 0.001 \\
+        \bottomrule
+    \end{tabularx}
+    \caption{Rangos de hiperparámetros explorados en la primera ronda de experimentos.}
+    \label{tab:hiperparam-rangos}
 \end{table}
+
+En la Figura~\ref{fig:round1-metrics} se muestran las curvas de pérdida y de precisión,
+tanto en entrenamiento como en validación.
+Estas evidencian una alta variabilidad entre configuraciones, lo cual confirma la necesidad de esta fase exploratoria.
 
 \begin{figure}[H]
 	\centering
 	\begin{subfigure}[b]{0.45\textwidth}
-		\placeholderimage{0.3\textwidth}
+		\includegraphics[width=\textwidth]{fig/proy/train_loss_round1.png}
 		\caption{Función de pérdida en conjunto de entrenamiento}
 	\end{subfigure}
 	\hfill
 	\begin{subfigure}[b]{0.45\textwidth}
-		\placeholderimage{0.3\textwidth}
+		\includegraphics[width=\textwidth]{fig/proy/val_loss_round1.png}
 		\caption{Función de pérdida en conjunto de validación}
 	\end{subfigure}
 
 	\begin{subfigure}[b]{0.45\textwidth}
-		\placeholderimage{0.3\textwidth}
+		\includegraphics[width=\textwidth]{fig/proy/train_plate_len_round1.png}
+		\caption{Precisión de reconocimiento de longitud de placa en conjunto de entrenamiento}
+	\end{subfigure}
+	\hfill
+	\begin{subfigure}[b]{0.45\textwidth}
+		\includegraphics[width=\textwidth]{fig/proy/val_plate_len_round1.png}
+		\caption{Precisión de reconocimiento de longitud de placa en conjunto de validación}
+	\end{subfigure}
+
+	\begin{subfigure}[b]{0.45\textwidth}
+		\includegraphics[width=\textwidth]{fig/proy/train_plate_acc_round1.png}
 		\caption{Precisión de reconocimiento de placa en conjunto de entrenamiento}
 	\end{subfigure}
 	\hfill
 	\begin{subfigure}[b]{0.45\textwidth}
-		\placeholderimage{0.3\textwidth}
+		\includegraphics[width=\textwidth]{fig/proy/val_plate_acc_round1.png}
 		\caption{Precisión de reconocimiento de placa en conjunto de validación}
 	\end{subfigure}
+	\caption{Métricas de aprendizaje en primer conjunto de experimentos}
+	\label{fig:round1-metrics}
 \end{figure}
+
+Luego, en la figura~\ref{fig:hiperparametros-round1-ocr} se muestran
+los resultados de precisión de reconocimiento de placa en validación contra
+los hiperparámetros. De estas gráficas se concluye que el mejor conjunto de hiperparámetros
+es el mostrado en la tabla~\ref{tab:mejores-parametros-iniciales},
+por lo que estos se mantienen fijos para las siguientes pruebas.
 
 \begin{figure}[H]
 	\begin{subfigure}[b]{\textwidth}
-		\placeholderimage{0.3\textwidth}
+		\includegraphics[width=0.8\textwidth]{fig/proy/hipeparam_image_round1.png}
 		\caption{Hiperparámetros de la imagen contra precisión de reconocimiento de placa}
 	\end{subfigure}
 
 	\begin{subfigure}[b]{\textwidth}
-		\placeholderimage{0.3\textwidth}
+		\includegraphics[width=0.8\textwidth]{fig/proy/hiperparam_model_round1.png}
 		\caption{Hiperparámetros del modelo contra precisión de reconocimiento de placa}
 	\end{subfigure}
 	
 	\begin{subfigure}[b]{\textwidth}
-		\placeholderimage{0.3\textwidth}
+		\includegraphics[width=0.8\textwidth]{fig/proy/hiperparam_optimizer_round1.png}
 		\caption{Hiperparámetros del entrenamiento contra precisión de reconocimiento de placa}
 	\end{subfigure}
+	\caption{Comparación de hiperparámetros contra precisión en validación}
+	\label{fig:hiperparametros-round1-ocr}
 \end{figure}
 
-El mejor conjunto de hiperparámetros corresponde al experimento XX; y son los listados en la 
-tabla \ref{tab:mejor-hiperparametros}
+En esta primera ronda de experimentos se observó un desempeño general alto en las métricas de entrenamiento,
+con varios modelos alcanzando una precisión de categoría y de placa cercanas o iguales a 1.0,
+lo que indica un ajuste completo al conjunto de entrenamiento.
+Sin embargo, las métricas de validación revelan diferencias notables en la capacidad de generalización.
+
+Los experimentos 0, 1 y 4 presentaron las mejores métricas de validación globales,
+alcanzando precisiones de placa superiores a 0.85 y pérdidas por debajo de 0.18 en el mejor caso (experimento 0).
+En cambio, el experimento 5 mostró una caída significativa en la precisión de placa (0.644) y
+un aumento de la pérdida (0.512), sugiriendo sobreajuste o una combinación inadecuada de hiperparámetros
+(por ejemplo, más cabezas de atención y mayor proyección).
+
+El experimento 7, a pesar de obtener buenos resultados en entrenamiento, 
+mostró una ligera reducción en validación respecto al experimento 4,
+probablemente por un exceso de caída (0.25). Por otro lado, 
+el experimento 6 mantuvo un equilibrio razonable entre entrenamiento y
+validación, con una pérdida moderada y buena estabilidad,
+lo que indica una configuración más robusta.
+
+En general, se observa que las configuraciones con 2–3 capas y 
+1 cabeza de atención ofrecieron mejor desempeño general.
+El uso de activación GELU y valores moderados de caída (0.1–0.15) favoreció la estabilidad y precisión.
+Los modelos con tamaño de imagen 32x64 y en color RGB y batch de 32–64 mostraron mejor capacidad de generalización.
+
+Así, el experimento 0 se destaca como el más equilibrado entre rendimiento y estabilidad,
+constituyendo un buen punto de partida para ajustes finos en la siguiente ronda de optimización.
+Con ello se selecciona los parámetros fijos del experimento 0 que se resumen en la tabla \ref{tab:mejores-parametros-iniciales}.
+
 \begin{table}[H]
-	\begin{tabular}{| c | c |}
-	\hline
-		Parámetros & Valor \\
-	\hline
-		XX & XX \\
-	\hline
+	\centering
+	\begin{tabular}{cc}
+		\toprule	
+		\textbf{Parámetro} & \textbf{Valor} \\
+		\midrule
+		Capas & 4 \\
+		Cabezas de atención & 1 \\
+		Dimensión de proyección & 64 \\
+		Función de activación & GELU \\
+		Caída de atención & 0.05 \\
+		Caída de MLP & 0.1 \\
+		Altura de imagen & 64 \\
+		Ancho de imagen & 128 \\
+		Modo de color & RGB \\
+		Tamaño de lote & 32 \\
+		Decaimiento de pesos & 0.0005 \\
+		Tasa de aprendizaje & 0.0005 \\
+		\bottomrule
 	\end{tabular}
-	\label{tab:mejor-hiperparametros}
+	\caption{Mejor conjunto de hiperparámetros de entrada, optimizador y modelo.}
+	\label{tab:mejores-parametros-iniciales}
 \end{table}
 
-HACER COMPARACIÓN DE METRICAS CON RESPECTO A MODELO BASE
+\subsection{Segunda ronda de experimentos: optimización de aumentos de datos}
 
-REALIZAR LAS CONCLUSIONES
+Con los parámetros principales ya fijados,
+la segunda ronda de experimentos se enfocó en evaluar el impacto de los esquemas de aumento de datos,
+modificando tanto el tipo como la intensidad de los mismos.
+En esta fase se probaron técnicas como rotaciones, cambios de brillo y contraste,
+ruido aditivo y distorsiones geométricas, entre otras,
+variando su probabilidad de aplicación y magnitud. 
+Las gráficas resultantes de los experimentos se muestran en la figura \ref{fig:graficas-train-val-aumentado}.
+
+\begin{figure}[H]
+	\centering
+	\begin{subfigure}[t]{0.45\textwidth}
+		\centering
+		\includegraphics[width=\textwidth]{fig/proy/train_loss_round2.png}
+		\caption{Pérdida en entrenamiento}
+	\end{subfigure}
+	\hfill
+	\begin{subfigure}[t]{0.45\textwidth}
+		\centering
+		\includegraphics[width=\textwidth]{fig/proy/val_plate_loss_round2.png}
+		\caption{Pérdida en validación}
+	\end{subfigure}
+
+	\begin{subfigure}[t]{0.45\textwidth}
+		\centering
+		\includegraphics[width=\textwidth]{fig/proy/train_plate-acc_round2.png}
+		\caption{Precisión de reconocimiento de placa completa en entrenamiento}
+	\end{subfigure}
+	\hfill
+	\begin{subfigure}[t]{0.45\textwidth}
+		\centering
+		\includegraphics[width=\textwidth]{fig/proy/val_plate_acc_round2.png}
+		\caption{Precisión de reconocimiento de placa completa en validación}
+	\end{subfigure}
+
+	\begin{subfigure}[t]{0.45\textwidth}
+		\centering
+		\includegraphics[width=\textwidth]{fig/proy/train_plate_len_acc_round2.png}
+		\caption{Precisión de reconocimiento de cantidad de caracteres en entrenamiento}
+	\end{subfigure}
+	\hfill
+	\begin{subfigure}[t]{0.45\textwidth}
+		\centering
+		\includegraphics[width=\textwidth]{fig/proy/val_plate_len_acc_round2.png}
+		\caption{Precisión de reconocimiento de cantidad de caracteres en validación}
+	\end{subfigure}
+
+	\caption{Métricas de entrenamiento y validación de aumentado de placas con aumentado de datos}
+	\label{fig:graficas-train-val-aumentado}
+\end{figure}
+
+Los primeros experimentos (1–2, 5) se centraron en perturbaciones ligeras de geometría y color,
+representando condiciones moderadas de captura. Posteriormente,
+los experimentos 3–4 introdujeron transformaciones de perspectiva y
+degradaciones por compresión y reducción de resolución, orientadas a escenarios de vigilancia.
+Finalmente, los experimentos 6–9 aplicaron distorsiones geométricas no lineales,
+ruido de mayor magnitud y pérdidas de información,
+simulando condiciones extremas de mala calidad de imagen.
+Experimentalmente, en cada iteración se observan ejemplos de aumentado antes de ejecutar el
+entrenamiento, y posterior a ello se evalúan los casos de error y el rendimiento
+para determinar si vale la pena realizar entrenamientos extra o cambiar el 
+tipo e intensidad del aumentado.
+Este diseño permite un análisis ablativo de cómo la severidad de las transformaciones afecta el desempeño del OCR.
+El cual se realiza a continuación:
+
+\begin{enumerate}
+    \item \textbf{Experimento 1:} 
+    Se parte de un esquema base con transformaciones geométricas leves 
+		(\emph{Affine} con rotaciones de $\pm15^\circ$, escalados entre 0.75 y 1.1, y traslaciones del 2\%). 
+    Además, se aplican modificaciones de brillo y contraste ($\pm0.1$), pequeños cambios de tono, saturación y canal RGB, 
+    correcciones de gamma y ocasional conversión a escala de grises. 
+    Se incluyen desenfoques (\emph{GaussianBlur, MotionBlur}), 
+    ruido leve (Gaussiano con $\sigma=0.01$--$0.03$, ISO y multiplicativo), 
+    compresión JPEG (calidad 55–90) y técnicas de pérdida local de información (\emph{Dropout, PixelDropout, GridDropout}).
+
+    \item \textbf{Experimento 2:} 
+    Similar al anterior, con la misma configuración de \emph{Affine}, iluminación y ruido. 
+    Las diferencias son mínimas en las combinaciones (\emph{OneOf}) de color y ruido, 
+    lo que lo convierte en una réplica para validar la consistencia de los resultados del esquema base.
+
+    \item \textbf{Experimento 3:} 
+    Se mantiene la base geométrica (\emph{Affine} con $\pm10^\circ$, escala 0.85–1.1), 
+    pero se añade \emph{Perspective} (p=0.3) para simular inclinaciones. 
+    Las perturbaciones de iluminación son más suaves ($\pm0.08$) y no se incluyen cambios de color. 
+    En cuanto a degradación, se introduce compresión JPEG (65–95) y reducción de resolución (\emph{Downscale} 0.7–0.9), 
+    simulando pérdida de nitidez.
+
+    \item \textbf{Experimento 4:} 
+    Muy similar al 3, repite la combinación de \emph{Affine + Perspective}, brillo/contraste leve y degradaciones. 
+    Funciona como confirmación de los efectos observados en el caso anterior.
+
+    \item \textbf{Experimento 5:} 
+    Retoma la estructura del experimento 1 pero aplica todos los aumentos de manera acumulativa, 
+    sin la lógica de selección alternativa (\emph{OneOf}). 
+    Esto da como resultado un aumento más denso: geometría, color, blur, ruido, compresión y dropout 
+    pueden aplicarse conjuntamente, elevando la dificultad de los ejemplos sintéticos.
+
+    \item \textbf{Experimento 6:} 
+    Aumenta la severidad de las transformaciones geométricas: se alterna entre \emph{Perspective} (hasta 15\%) 
+    o \emph{Affine} con rotaciones de $\pm20^\circ$ y \emph{shear} de $\pm4^\circ$. 
+    Se introducen distorsiones no lineales (\emph{ElasticTransform, GridDistortion, OpticalDistortion}). 
+    La iluminación varía hasta $\pm0.15$, se añaden desenfoques más intensos (\emph{MotionBlur} hasta 11px), 
+    y ruido más fuerte ($\sigma=0.01$–0.1). 
+    También se incorporan pérdidas mayores (\emph{CoarseDropout} con agujeros de hasta 8 px y \emph{Downscale} 0.5–0.7).
+
+    \item \textbf{Experimento 7:} 
+    Mantiene la estructura del 6, pero con un rango de contraste más amplio ($\pm0.5$), 
+    lo que genera mayor variabilidad en la apariencia tonal. 
+    Se reduce levemente la intensidad del ruido Gaussiano ($\sigma=0.01$–0.08). 
+    En lo demás, conserva las distorsiones geométricas fuertes y las degradaciones.
+
+    \item \textbf{Experimento 8:} 
+    Similar al 7, pero incrementa aún más la dificultad geométrica: rotaciones de $\pm30^\circ$ en \emph{Affine}, 
+    lo que simula ángulos de captura extremos. 
+    Se mantiene la combinación de distorsiones (\emph{Elastic, Grid, Optical}), 
+    degradaciones de blur, ruido ($\sigma=0.01$–0.07) y compresión JPEG (35–75).
+
+    \item \textbf{Experimento 9:} 
+    Representa el caso más agresivo. La transformación \emph{Perspective} alcanza hasta 25\% de deformación, 
+    combinada con \emph{Affine} de $\pm30^\circ$ y \emph{shear} $\pm4^\circ$. 
+    La iluminación varía hasta $\pm0.2$ en brillo y $\pm0.5$ en contraste, 
+    con mayores desplazamientos de color (Hue/Sat ±15–20, RGB shift hasta 20). 
+    Se mantienen las distorsiones geométricas no lineales, ruido ($\sigma=0.01$–0.06), 
+    compresión agresiva y fuertes pérdidas locales de información.
+\end{enumerate}
+
+Finalmente, el análisis comparativo de los nueve esquemas de aumentación evidencia un patrón 
+claro en el efecto de la intensidad de las transformaciones.
+En los experimentos con aumentación suave (1–5), el modelo logra muy alta precisión en entrenamiento
+(superior al 97\% en reconocimiento de placa completa) y pérdidas mínimas,
+pero en validación la precisión de placa se estabiliza alrededor del 97.3–97.7\%.
+En contraste, los experimentos con aumentación excesivamente fuerte (6–7),
+que incorporan distorsiones geométricas y degradaciones muy agresivas, 
+deterioran el aprendizaje: la precisión de placa en entrenamiento cae hasta valores cercanos al 70\%,
+y aunque la validación se mantiene en torno al 97.2–97.7\%, no ofrece ventajas y 
+representa el peor desempeño global (particularmente el experimento 7).
+Finalmente, los esquemas de intensidad intermedia-fuerte (8–9) logran el mejor equilibrio:
+aunque penalizan moderadamente el entrenamiento (precisión de placa en torno al 83–85\%),
+alcanzan las mayores mejoras en validación. Destaca el experimento 9, que obtuvo la mejor precisión
+de placa en validación (98.4\%), la pérdida más baja (0.016) y un desempeño consistente en todas
+las métricas, consolidándose como el mejor modelo a implementar en el proyecto.
+
+Utilizando este modelo, se realiza el análisis de los casos de fallo, 
+para determinar, cualitativamente, las características de los fallos
+existentes; esto permite planificar mejoras posibles en futuros experimentos
+y las limitaciones del sistema. Algunos de los casos de fallo se muestran en
+las figuras~\ref{fig:ocr-fallos}.
+
+\begin{figure}[H]
+	\begin{subfigure}[b]{0.3\textwidth}
+		\includegraphics[width=\textwidth]{fig/proy/orc-fail-1.png}
+		\caption{Fallo en primera K}
+		\label{fig:ocr-fallo-1}
+	\end{subfigure}
+	\begin{subfigure}[b]{0.3\textwidth}
+		\includegraphics[width=\textwidth]{fig/proy/ocr-fail-2.png}
+		\caption{Fallo en el 8}
+		\label{fig:ocr-fallo-2}
+	\end{subfigure}
+	\begin{subfigure}[b]{0.3\textwidth}
+		\includegraphics[width=\textwidth]{fig/proy/ocr-fail-3.png}
+		\caption{Fallo en el 1}
+		\label{fig:ocr-fallo-3}
+	\end{subfigure}
+
+	\begin{subfigure}[b]{0.3\textwidth}
+		\includegraphics[width=\textwidth]{fig/proy/ocr-fail-4.png}
+		\caption{Fallo en el segundo 7}
+		\label{fig:ocr-fallo-4}
+	\end{subfigure}
+	\begin{subfigure}[b]{0.3\textwidth}
+		\includegraphics[width=\textwidth]{fig/proy/ocr-fail-5.png}
+		\caption{Fallo en ambos 5}
+		\label{fig:ocr-fallo-5}
+	\end{subfigure}
+	\begin{subfigure}[b]{0.3\textwidth}
+		\includegraphics[width=\textwidth]{fig/proy/ocr-fail-6.png}
+		\caption{Fallo completo}
+		\label{fig:ocr-fallo-6}
+	\end{subfigure}
+
+	\begin{subfigure}[b]{0.3\textwidth}
+		\includegraphics[width=\textwidth]{fig/proy/ocr-fail-7.png}
+		\caption{Fallo en primer 6 y el 3}
+		\label{fig:ocr-fallo-7}
+	\end{subfigure}
+	\begin{subfigure}[b]{0.3\textwidth}
+		\includegraphics[width=\textwidth]{fig/proy/ocr-fail-8.png}
+		\caption{Fallo completo}
+		\label{fig:ocr-fallo-8}
+	\end{subfigure}
+	\begin{subfigure}[b]{0.3\textwidth}
+		\includegraphics[width=\textwidth]{fig/proy/ocr-fail-9.png}
+		\caption{Fallo en la X}
+		\label{fig:ocr-fallo-9}
+	\end{subfigure}
+
+	\begin{subfigure}[b]{0.45\textwidth}
+		\includegraphics[width=\textwidth]{fig/proy/ocr-fail-10.png}
+		\caption{Fallo completo}
+		\label{fig:ocr-fallo-10}
+	\end{subfigure}
+	\begin{subfigure}[b]{0.45\textwidth}
+		\includegraphics[width=\textwidth]{fig/proy/ocr-fail-11.png}
+		\caption{Fallo completo}
+		\label{fig:ocr-fallo-11}
+	\end{subfigure}
+
+	\caption{Casos de fallo en el reconocimiento de placas}
+	\label{fig:ocr-fallos}
+\end{figure}
+
+En las imágenes~\ref{fig:ocr-fallo-3},~\ref{fig:ocr-fallo-5} y~\ref{fig:ocr-fallo-6}
+el motivo principal de fallo es atribuible al efecto de reflexión secundaria
+(también conocido como ghosting), caracterizado por la aparición de una réplica tenue y
+ligeramente desplazada de la placa original. Esta superposición introduce duplicidad de 
+bordes y solapamiento de contornos de caracteres, lo que confunde al OCR.
+
+Los casos~\ref{fig:ocr-fallo-1},~\ref{fig:ocr-fallo-2} y~\ref{fig:ocr-fallo-7} 
+son atribuibles a problemas de perspectiva. En~\ref{fig:ocr-fallo-1}
+la cercanía entre el borde de la placa y el trazo de la letra ``K'', ambos de color similar,
+provoca ambigüedad en la agrupación de contornos. En~\ref{fig:ocr-fallo-2}
+la vista elevada acorta el semicírculo superior del ``8'',
+produciendo que el carácter se interprete como un ``6''.
+En~\ref{fig:ocr-fallo-7} el ángulo de inclinación es particularmente pronunciado
+y lo cual puede afectar la forma en que el OCR aprendió los rasgos característicos de los dígitos.
+
+El fallo mostrado en~\ref{fig:ocr-fallo-9} parece originarse en la baja calidad de la imagen
+---alto grado de desenfoque y pérdida de detalle--- que provoca la confusión entre rasgos similares
+(por ejemplo, $\text{``X''}\leftrightarrow \text{``K''}$) al perderse los bordes finos de los caracteres.
+Los casos~\ref{fig:ocr-fallo-8} y~\ref{fig:ocr-fallo-11} están relacionados con condiciones de iluminación:
+una iluminación excesiva reducen el contraste en los bordes de los caracteres y
+provocan el fallo completo del reconocimiento de la placa.
+
+Finalmente, el caso~\ref{fig:ocr-fallo-10} es interesante porque, 
+aunque la placa presenta ligeras abolladuras que no debería impedir la lectura,
+se producen múltiples errores en distintos dígitos.
+Esto sugiere la presencia de factores combinados y requiere un análisis posterior más exhaustivo.
+
+\subsection{Comparación respecto a modelo base}
+
+De igual forma que con el detector de placas, con el fin de validar el desempeño
+del sistema propuesto y su mejora, se compara este con los resultados ofrecidos 
+frente a algún modelo base definido, los cual son el modelo EasyOCR usado en el 
+proyecto anterior, y Fast-Plate-OCR sin ajuste fino.
+La tabla~\ref{tab:ocr-vs-base} resume las métricas obtenidas.
+
+\begin{table}[H]
+	\centering
+	\begin{tabular}{lcccc}
+		\toprule
+		\textbf{Modelo} & \textbf{Precisión de placa} & \textbf{Precisión de longitud} \\
+		\midrule
+		EasyOCR   & 0.037 & 0.037 & \\
+		Fast-Plate-OCR sin ajuste   & 0.755 & 0.807 \\
+		OCR propuesto & 0.984 & 0.997  \\
+		\bottomrule
+	\end{tabular}
+	\caption{Comparación de desempeño entre el modelo base y el modelo OCR propuesto.}
+	\label{tab:ocr-vs-base}
+\end{table}
+
+Los resultados muestran una mejora significativa del sistema propuesto respecto a los modelos base. 
+Mientras que EasyOCR alcanza apenas un 3.7\% de precisión de placa y precisión de longitud,
+el modelo Fast Plate OCR sin ajuste fino logra un desempeño moderado con 75.5\% y 80.7\%, respectivamente.
+En contraste, el modelo propuesto, tras el proceso de ajuste fino y optimización de aumentación de datos,
+alcanza una precisión de placa del 98.4\% y una precisión de longitud del 99.7\%.
+Estas cifras superan ampliamente los criterios establecidos de mejora 
+($\geq 10\%$ para precisión completa y $\geq 5\%$ para reconocimiento parcial),
+validando que el sistema no solo incrementa la exactitud en el reconocimiento completo de placas,
+sino también su robustez frente a variaciones en los datos de entrada.
+En conjunto, los resultados confirman que el ajuste fino del modelo
+Fast Plate OCR permite obtener un OCR más preciso, estable y 
+generalizable que las alternativas empleadas previamente.
+
+Finalmente, a modo de ejemplo, en las figuras en~\ref{fig:ejemplo-reconocimiento-placa}
+se muestran ejemplos reconocimiento de placas que ilustran el funcionamiento
+y desempeño de esta etapa del sistema.
+
+\begin{figure}[H]
+	\begin{subfigure}[b]{0.3\textwidth}
+		\includegraphics[width=\textwidth]{fig/proy/ejemplo-ocr-1.png}
+	\end{subfigure}
+	\begin{subfigure}[b]{0.3\textwidth}
+		\includegraphics[width=\textwidth]{fig/proy/ejemplo-ocr-2.png}
+	\end{subfigure}
+	\begin{subfigure}[b]{0.3\textwidth}
+		\includegraphics[width=\textwidth]{fig/proy/ejemplo-ocr-3.png}
+	\end{subfigure}
+
+	\begin{subfigure}[b]{0.3\textwidth}
+		\includegraphics[width=\textwidth]{fig/proy/ejemplo-ocr-4.png}
+	\end{subfigure}
+	\begin{subfigure}[b]{0.3\textwidth}
+		\includegraphics[width=\textwidth]{fig/proy/ejemplo-ocr-5.png}
+	\end{subfigure}
+	\begin{subfigure}[b]{0.3\textwidth}
+		\includegraphics[width=\textwidth]{fig/proy/ejemplo-ocr-6.png}
+	\end{subfigure}
+
+	\caption{Ejemplo de reconocimiento de placas}
+	\label{fig:ejemplo-reconocimiento-placa}
+\end{figure}
+
+\section{Evaluación del desempeño del sistema integrado}
+
+Para validar el rendimiento operativo del sistema completo 
+---es decir, la integración del detector YOLO y el reconocedor Fast-Plate-OCR---,
+se realizaron mediciones de latencia y velocidad de procesamiento en la aplicación final. 
+El sistema se ejecutó en modo video, procesando un flujo continuo de cuadros con resolución 1080×720 píxeles. 
+La medición de tiempos se realizó mediante el uso de la función \texttt{time.time()} de python,
+que permitió calcular la latencia por cuadro y la velocidad promedio en cuadros por segundo (FPS).
+
+Las pruebas se realizaron en un entorno sin aceleración por GPU, renderizando video,
+utilizando los modelos originales en formato \texttt{.pt} (YOLO) y \texttt{.keras} (OCR),
+y sin optimización ni conversión a formatos \texttt{ONNX}. 
+El sistema operativo y hardware de prueba se detallan en la tabla~\ref{tab:hardware}.
+
+\begin{table}[H]
+	\centering
+	\begin{tabular}{ll}
+		\toprule
+		\textbf{Parámetro} & \textbf{Valor} \\
+		\midrule
+		Sistema operativo & Arch Linux x86\_64 \\
+		Procesador & Intel\textsuperscript{\textregistered} Core\textsuperscript{TM} i5-7200U (4 núcleos, 3.10 GHz) \\
+		GPU & Intel HD Graphics 620 (integrada, 1.0 GHz) \\
+		Memoria RAM & 8 GB DDR4 \\
+		Disco & HDD 930 GB (btrfs) \\
+		\bottomrule
+	\end{tabular}
+	\caption{Configuración del sistema utilizado para las pruebas de desempeño.}
+	\label{tab:hardware}
+\end{table}
+
+Durante la ejecución, se obtuvieron los resultados resumidos en la tabla~\ref{tab:fps-metrics}.
+
+\begin{table}[H]
+	\centering
+	\renewcommand{\arraystretch}{1.2}
+	\begin{tabular}{lc}
+		\toprule
+		\textbf{Métrica} & \textbf{Valor medido} \\
+		\midrule
+		Latencia promedio por cuadro & 308.4 ms \\
+		Velocidad promedio & 3.24 FPS  \\
+		Cuadros procesados & 94  \\
+		Cuadros con detección exitosa & 94 (100\%) \\
+		\bottomrule
+	\end{tabular}
+	\caption{Resultados de desempeño del sistema integrado (YOLO + Fast-Plate-OCR).}
+	\label{tab:fps-metrics}
+\end{table}
+
+Los resultados reflejan un rendimiento limitado por la ausencia de aceleración por GPU y 
+el uso de modelos en formato sin optimizar. 
+El sistema logró mantener una velocidad promedio de 3.24 FPS y una latencia de 308 ms por cuadro,
+Se espera que el desempeño mejore significativamente mediante el uso de versiones optimizadas 
+de los modelos en formato \texttt{ONNX} y ejecución en hardware con aceleración CUDA.
+
+Finalmente, igual que en los casos anteriores, 
+se muestran en las figuras ~\ref{fig:ejemplo-alpr-completo} ejemplos
+del sistema completo en funcionamiento.
+
+\begin{figure}[H]
+	\begin{subfigure}[b]{0.45\textwidth}
+		\includegraphics[width=\textwidth]{fig/proy/app-ejemplo-1.png}
+	\end{subfigure}
+	\begin{subfigure}[b]{0.45\textwidth}
+		\includegraphics[width=\textwidth]{fig/proy/app-ejemplo-3.png}
+	\end{subfigure}
+
+	\caption{Ejemplo de funcionamiento del sistema}
+	\label{fig:ejemplo-alpr-completo}
+\end{figure}
+

@@ -24,13 +24,31 @@ doc/cap1/*.run.xml
 doc/cap1/*.toc
 doc/cap1/*.todo
 doc/cap1/*.out
+doc/cap1/main-blx.bib
+doc/cap1/main.bbl
+doc/cap1/main.blg
+doc/cap1/main.ilg
+doc/cap1/main.nls
+doc/cap1/*.back
 
 # programs for experiments
 src/yolo_fail_filter.py
 src/slurm_lpd_eval.sh
 src/slurm_lpd_compare.sh
+src/slurm_lpd_train_*.sh
 src/slurm_lpr_train_*.sh
 src/models/ocr/cct_xs_v1_global_model_config*
 src/models/ocr/cct_xs_v1_global_plate_config*
 src/models/ocr/*csv
 doc/cronograma/*ods
+
+src/test_*
+src/eval_*
+src/wb_*
+src/metricas*
+
+models/
+runs/
+
+#Python vritual enviroment
+myenv310

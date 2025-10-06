@@ -12,16 +12,17 @@ import random
 
 def get_random_pattern():
     patterns = [
-        "265-nn",
-        "265-nnn",
-        "cl-nnnnnn",
-        "d-nnn",
-        # "vh-nn",
-        # "vh-nnn",
-        "m-nnnnnn",
-        "m-nnn/nnn",
-        "lll-nnn",
-        "nnnnnn",
+    #     "265-nn",
+    #     "265-nnn",
+    #     "cl-nnnnnn",
+    #     "d-nnn",
+    #     # "vh-nn",
+    #     # "vh-nnn",
+    #     "m-nnnnnn",
+    #     "m-nnn/nnn",
+    #     "lll-nnn",
+    #     "nnnnnn",
+        "m-nnnnn"
     ]
     return random.sample(patterns, 1)[0]
 
