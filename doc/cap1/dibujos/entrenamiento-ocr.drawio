@@ -84,7 +84,7 @@
             <mxPoint x="14" y="-4" as="offset" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="QhY3QZyYSOGPtFndmwKQ-23" value="&lt;font style=&quot;color: rgb(0, 0, 0);&quot;&gt;Presición&amp;nbsp;&lt;/font&gt;&lt;div&gt;&lt;font style=&quot;color: rgb(0, 0, 0);&quot;&gt;mayor al&amp;nbsp;&lt;/font&gt;&lt;/div&gt;&lt;div&gt;&lt;font style=&quot;color: rgb(0, 0, 0);&quot;&gt;anterior&lt;/font&gt;&lt;/div&gt;" style="rhombus;whiteSpace=wrap;html=1;fillColor=#B9E0A5;strokeColor=#000000;" parent="1" vertex="1">
+        <mxCell id="QhY3QZyYSOGPtFndmwKQ-23" value="&lt;font style=&quot;color: rgb(0, 0, 0);&quot;&gt;Precisión&amp;nbsp;&lt;/font&gt;&lt;div&gt;&lt;font style=&quot;color: rgb(0, 0, 0);&quot;&gt;mayor al&amp;nbsp;&lt;/font&gt;&lt;/div&gt;&lt;div&gt;&lt;font style=&quot;color: rgb(0, 0, 0);&quot;&gt;anterior&lt;/font&gt;&lt;/div&gt;" style="rhombus;whiteSpace=wrap;html=1;fillColor=#B9E0A5;strokeColor=#000000;" parent="1" vertex="1">
           <mxGeometry x="496" y="142.5" width="93" height="95" as="geometry" />
         </mxCell>
         <mxCell id="QhY3QZyYSOGPtFndmwKQ-31" value="No" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" parent="1" vertex="1">

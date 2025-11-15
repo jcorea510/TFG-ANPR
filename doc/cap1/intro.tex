@@ -20,7 +20,7 @@ el estacionamiento City, ubicado al costado sur del Campus sobre calle 5,
 el cual consta de 24 espacios para automóviles y 2 motocicletas.
 La Fig. \ref{fig:ubiacion_parqueos}, muestra la ubicación del Campus según Google Maps.
 
-\begin{table}[H]
+\begin{table}[hb]
     \centering
     \begin{tabular}{lcc}
         \toprule
@@ -37,7 +37,7 @@ La Fig. \ref{fig:ubiacion_parqueos}, muestra la ubicación del Campus según Goo
     \label{tab:numero_espacios}
 \end{table}
 
-\begin{figure}[H]
+\begin{figure}[h]
 	\centering
 	\includegraphics[width=0.8\textwidth]{fig/proy/ubicacion-parqueos-vectorial.jpg}
 	\caption{Ubicación de los parqueos obtenida mediante Google Maps.}
@@ -60,7 +60,7 @@ Si los hay, se abre el portón para que los vehículos puedan ingresar.
 Cabe señalar que solo el portón del estacionamiento interno cuenta con un semáforo que indica si hay espacios disponibles.
 Este semáforo es operado manualmente por los guardas de seguridad.
 
-\begin{figure}[H]
+\begin{figure}[h]
 	\centering
 	\includegraphics[width=0.8\textwidth]{fig/proy/croquis_del_campus_tec_san_jose.jpeg}
 	\caption{Croquis del Campus Tecnológico Local San José \cite{tecCroquisSJ}.}
@@ -87,7 +87,7 @@ En síntesis, la gestión actual de los estacionamientos del Campus San José
 depende en gran medida de procedimientos manuales y de la coordinación verbal 
 entre el personal de seguridad y los usuarios.
 Si bien esta situación puede atenderse parcialmente con mejoras administrativas,
-resulta evidente que también se requiere de una solución técnica que provea información confiable y
+resulta evidente que también requiere una componente técnica que provea información confiable y
 en tiempo real sobre la disponibilidad de espacios y el flujo vehicular.
 Contar con dicha información permitiría a los guardas y a las personas usuarias tomar decisiones oportunas,
 agilizando la movilidad en la institución.
@@ -123,7 +123,7 @@ al evaluar el modelo con un conjunto de imágenes de placas costarricenses
 Además, para la detección de placas se utilizó un conjunto de datos reducido,
 compuesto por aproximadamente 300 imágenes de automóviles costarricenses,
 divididas entre entrenamiento y validación. Debido al tamaño limitado del conjunto,
-el modelo presentó un claro sobreajuste, afectando significativamente su desempeño en nuevas imágenes.
+el modelo presentó sobreajuste, afectando su desempeño en nuevas imágenes.
 
 El sistema desarrollado anteriormente se apoyó en técnicas clásicas de 
 visión por computadora para realizar la identificación.
@@ -136,58 +136,58 @@ junto con condiciones de iluminación adversas (sol directo en las mañanas y es
 dificulta la visibilidad y complica el funcionamiento del sistema ANPR.
 Por estos motivos, el proyecto anterior no se llegó a implementar.
 
-Se adjunta un croquis que ilustren la distribución aproximada
-de los elementos dentro del campus.
-
-\begin{figure}[H]
-    \centering
-    \begin{subfigure}[t]{0.45\textwidth}
-        \centering
-		\placeholderimage{0.3\textwidth}
-        % \includegraphics[width=\linewidth]{fig/proy/example-image-pacheco_croquis_front}
-        \caption*{Pacheco - Vista frontal}
-    \end{subfigure}
-    \hfill
-    \begin{subfigure}[t]{0.45\textwidth}
-        \centering
-		\placeholderimage{0.3\textwidth}
-        % \includegraphics[draft,width=\linewidth]{fig/proy/example-image-pacheco_croquis_up}
-        \caption*{Pacheco - Vista superior}
-    \end{subfigure}
-    
-	\vspace{1em}
-	
-    \begin{subfigure}[t]{0.45\textwidth}
-        \centering
-		\placeholderimage{0.3\textwidth}
-        % \includegraphics[draft,width=\linewidth]{fig/proy/example-image-city_croquis_front}
-        \caption*{City - Vista frontal}
-    \end{subfigure}
-	\hfill
-    \begin{subfigure}[t]{0.45\textwidth}
-        \centering
-		\placeholderimage{0.3\textwidth}
-        % \includegraphics[draft,width=\linewidth]{fig/proy/example-image-city_croquis_up}
-        \caption*{City - Vista superior}
-    \end{subfigure}
-	
-	\vspace{1em}
-
-    \begin{subfigure}[t]{0.45\textwidth}
-        \centering
-		\placeholderimage{0.3\textwidth}
-        % \includegraphics[draft,width=\linewidth]{fig/proy/principal_croquis_front.png}
-        \caption*{Principal - Vista frontal}
-    \end{subfigure}
-	\hfill
-    \begin{subfigure}[t]{0.45\textwidth}
-        \centering
-		\placeholderimage{0.3\textwidth}
-        % \includegraphics[draft,width=\linewidth]{fig/proy/principal_croquis_up.png}
-        \caption*{Principal- Vista superior}
-    \end{subfigure}
-    \caption{Croquis de los sitios evaluados: Casa Pacheco, Estacionamiento City y Estacionamiento Principal.}
-\end{figure}
+% Se adjunta un croquis que ilustra la distribución aproximada
+% de los elementos dentro del campus.
+%
+% \begin{figure}[H]
+%     \centering
+%     \begin{subfigure}[t]{0.45\textwidth}
+%         \centering
+% 		\placeholderimage{0.3\textwidth}
+%         % \includegraphics[width=\linewidth]{fig/proy/example-image-pacheco_croquis_front}
+%         \caption*{Pacheco - Vista frontal}
+%     \end{subfigure}
+%     \hfill
+%     \begin{subfigure}[t]{0.45\textwidth}
+%         \centering
+% 		\placeholderimage{0.3\textwidth}
+%         % \includegraphics[draft,width=\linewidth]{fig/proy/example-image-pacheco_croquis_up}
+%         \caption*{Pacheco - Vista superior}
+%     \end{subfigure}
+%
+% 	\vspace{1em}
+%
+%     \begin{subfigure}[t]{0.45\textwidth}
+%         \centering
+% 		\placeholderimage{0.3\textwidth}
+%         % \includegraphics[draft,width=\linewidth]{fig/proy/example-image-city_croquis_front}
+%         \caption*{City - Vista frontal}
+%     \end{subfigure}
+% 	\hfill
+%     \begin{subfigure}[t]{0.45\textwidth}
+%         \centering
+% 		\placeholderimage{0.3\textwidth}
+%         % \includegraphics[draft,width=\linewidth]{fig/proy/example-image-city_croquis_up}
+%         \caption*{City - Vista superior}
+%     \end{subfigure}
+%
+% 	\vspace{1em}
+%
+%     \begin{subfigure}[t]{0.45\textwidth}
+%         \centering
+% 		\placeholderimage{0.3\textwidth}
+%         % \includegraphics[draft,width=\linewidth]{fig/proy/principal_croquis_front.png}
+%         \caption*{Principal - Vista frontal}
+%     \end{subfigure}
+% 	\hfill
+%     \begin{subfigure}[t]{0.45\textwidth}
+%         \centering
+% 		\placeholderimage{0.3\textwidth}
+%         % \includegraphics[draft,width=\linewidth]{fig/proy/principal_croquis_up.png}
+%         \caption*{Principal- Vista superior}
+%     \end{subfigure}
+%     \caption{Croquis de los sitios evaluados: Casa Pacheco, Estacionamiento City y Estacionamiento Principal.}
+% \end{figure}
 
 \section{Retos en el control de acceso y disponibilidad de parqueos en el Campus San José}
 
@@ -214,7 +214,7 @@ visión por computadora y aprendizaje automático,
 diseñado para operar con las condiciones particulares del Campus San José y
 sin depender de licencias propietarias.
 
-Este trabajo propone desarrollar la etapa de reconocimiento automático de placas vehiculares (ANPR).
+Este trabajo propone el diseño de una etapa de reconocimiento automático de placas vehiculares (ANPR).
 El subsistema ANPR se implementa por medio de estrategias de extremo a extremo; 
 que contrasta con estrategias clásicas.
 
@@ -225,7 +225,7 @@ y su desempeño está limitado por el “eslabón más débil” de la cadena, l
 
 Un modelo de extremo a extremo mitiga estos problemas al integrar todo el proceso de reconocimiento 
 en una única arquitectura de aprendizaje profundo. Sin embargo, esto requiere grandes volúmenes 
-de datos para entrenamiento \cite{endToEndDepthwise}. Para suplir estos datos se propone 
+de datos para entrenamiento \cite{endToEndDepthwise}. Para suplir estos datos, en este trabajo, se propone 
 un generador de datos sintéticos de placas, que permite entrenar el modelo de reconocimiento de manera robusta.
 
 La propuesta de solución se organiza en dos etapas principales: detección y reconocimiento, según los siguientes principios:
@@ -236,13 +236,13 @@ La propuesta de solución se organiza en dos etapas principales: detección y re
 	al ingreso de automóviles y motocicletas.
 
 \item \textbf{Detección de placa:}  
-    Se utiliza una modelo de detección de objetos para localizar y extraer la región correspondiente a la matrícula.  
+    Se utiliza un modelo de detección de objetos para localizar y extraer la región correspondiente a la matrícula.  
 	Existen múltiples modelos pre-entrenados que pueden adaptarse.
 
 \item \textbf{Reconocimiento de placa:}  
 	A diferencia de los métodos basados en segmentación de caracteres, se emplea un modelo extremo a extremo 
-	que integra la extracción y reconocimiento en una sola red convolucional. Las redes son
-	entrenadas con datos sintéticos generados y posteriormente ajustadas con muestras reales.  
+	que integra la extracción y reconocimiento en una sola red convolucional. Las redes se
+	entrenan con datos sintéticos generados y posteriormente evaluadas con muestras reales.  
 \end{enumerate}
 
 La figura \ref{fig:diagrama-flujo-anpr} muestra las etapas del proyecto.
@@ -270,7 +270,7 @@ Al mismo tiempo, se implementan técnicas de aumento de datos en tiempo real dur
 robustecer el modelo ante condiciones adversas de iluminación, perspectiva de captura y resolución.
 
 Posteriormente, se debe
-diseñar y entrenar una arquitectura de reconocimiento automático de placas basada en un sistema
+diseñar y entrenar una arquitectura de reconocimiento automático de placas basada en dos redes
 extremo a extremo, que incluya una etapa de detección de región de placa 
 y otra de reconocimiento de texto sin segmentación manual.
 
@@ -278,8 +278,8 @@ Para finalizar, se evalúa el desempeño del sistema propuesto comparándolo con
 mediante métricas de reconocimiento y detección, con el fin de validar mejoras en precisión,
 exactitud completa y robustez.
 
-En cuanto a la estructura, este documento se organiza de la siguiente manera:
-El capítulo~\ref{ch:marco} expone el marco teórico y el estado del arte en sistemas
+Este documento se organiza de la siguiente manera:
+el capítulo~\ref{ch:marco} expone el marco teórico y el estado del arte en sistemas
 de reconocimiento de placas y gestión de estacionamientos inteligentes.
 A continuación, el capítulo~\ref{ch:solucion} describe la metodología empleada para el desarrollo de la solución.
 Posteriormente, el capítulo~\ref{ch:resultado} detalla los resultados obtenidos y el análisis de desempeño del sistema,

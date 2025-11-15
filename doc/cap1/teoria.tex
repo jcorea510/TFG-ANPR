@@ -1,34 +1,71 @@
 \chapter{Marco teórico}
 \label{ch:marco}
 
-Reconocimiento automático de números de placa (ANPR) involucra 
+\section{Metodología clásica de detección y reconocimiento de números de placa}
+
+El reconocimiento automático de números de placa (ANPR) involucra 
 la extracción de información de una fuente de imagen o video. 
 En los primeros sistemas de reconocimiento automático de matrículas,
 las técnicas clásicas de visión por computadora desempeñaban un papel fundamental para localizar y
 segmentar tanto la placa como sus caracteres.
 Típicamente, se dividía el
-procedimiento en cinco etapas Fig. \ref{fig:reconocimiento-clasico}.
+procedimiento en cinco etapas como describe la figura~\ref{fig:reconocimiento-clasico}.
 
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=\textwidth]{fig/proy/tecnica-clasica-ocr.drawio.png}
-	\caption{Técnica clásica de reconocimiento de caracteres}
+	\caption{Técnica clásica de reconocimiento de números de placa (ANPR).}
 	\label{fig:reconocimiento-clasico}
 \end{figure}
 
 El preprocesamiento típico es binarización (conversión de imagen 
-a escala de grises), esto se realiza con método Otsu; en algunos
+a escala de grises). Esto se realiza con el método Otsu~\cite{sym12081374}; en algunos
 casos se usaba imagen a color, pero estos casos tendían a tener
-menor precisión. Luego se procedía a la extracción de la región que contenía placa. 
-Entre los métodos más comunes para esta etapa destacan la Transformada de Hough y
-el Análisis de Componentes Conectados (CCA).
+menor precisión (ver figura~\ref{fig:otsu-example}). Luego se procedía a la extracción de la región que contenía placa. 
+Entre los métodos más comunes para esta etapa destacan la Transformada de Hough~\cite{hought516201} y
+el Análisis de Componentes Conectados (CCA)~\cite{arafat2020connected}.
+
+\begin{figure}[H]
+	\centering
+	\begin{subfigure}[t]{0.45\textwidth}
+		\centering
+		\includegraphics[width=\linewidth]{fig/proy/otsu-image-binarized-car.jpg}
+	\end{subfigure}
+	\hfill
+	\begin{subfigure}[t]{0.45\textwidth}
+		\centering
+		\includegraphics[width=\linewidth]{fig/proy/otsu-image-binarized-plate.jpg}
+	\end{subfigure}
+
+	\caption{Ejemplos de placas vehiculares capturadas en ambiente iluminado a la derecha 
+	y la imagen binarizada por Otsu a la izquierda (tomado de~\cite{sym12081374}).}
+	\label{fig:otsu-example}
+\end{figure}
 
 La Transformada de Hough es un procedimiento de extracción de características inicialmente
-concebido para la detección de líneas rectas. Su principio consiste en transformar los puntos 
+concebido para la detección de líneas rectas (ver figura~\ref{fig:hough-transform}).
+Su principio consiste en transformar los puntos 
 de borde en un espacio de parámetros, de modo que los puntos alineados en la imagen producen 
 intersecciones en dicho espacio, permitiendo identificar líneas o formas geométricas definidas.
 En el contexto de ANPR, esta técnica resulta especialmente útil para detectar
-los contornos rectangulares de la matrícula \cite{surveyANPR}. 
+los contornos rectangulares de la matrícula~\cite{surveyANPR}. 
+
+\begin{figure}[H]
+	\centering
+	\begin{subfigure}[t]{0.45\textwidth}
+		\centering
+		\includegraphics[width=0.7\textwidth]{fig/proy/Hough_LP.png}
+		\caption{Detección de bordes de placa}
+	\end{subfigure}
+	\begin{subfigure}[t]{0.45\textwidth}
+		\centering
+		\includegraphics[width=0.7\textwidth]{fig/proy/Hough_LP_rotate_img.png}
+		\caption{Imagen rotada de la placa}
+	\end{subfigure}
+	\caption{Ejemplo de aplicación de transformada de Hough para detección de placa y rotación 
+	(tomado de ~\cite{repo:mrzaizai2k})}
+	\label{fig:hough-transform}
+\end{figure}
 
 Por su parte, el Análisis de Componentes Conectados (CCA), también conocido como extracción de blobs,
 permite etiquetar regiones de píxeles conectados dentro de una imagen binaria.
@@ -36,187 +73,348 @@ Mediante un escaneo secuencial,
 se asigna una etiqueta única a cada conjunto de píxeles que comparten vecindad (4 u 8-conectividad).
 Esta técnica se utiliza tanto para la segmentación de la placa completa 
 como para la separación de los caracteres individuales,
-ya que cada símbolo puede identificarse como un componente conectado \cite{surveyANPR}.
+ya que cada símbolo puede identificarse como un componente conectado~\cite{surveyANPR}.
 
-En cuanto a la segmentación de caracteres, diversos enfoques fueron explorados en la literatura.
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.7\textwidth]{fig/proy/caracter-segmentation.png}
+	\caption{Segmentación de caracteres mediante CCA (tomado de~\cite{arafat2020connected}).}
+	\label{fig:cca-segmentacion-caracteres}
+\end{figure}
+
+En cuanto a la segmentación de caracteres.
 Uno de los más empleados es el de proyecciones horizontales y verticales,
 en el que se calculan histogramas de densidad de píxeles para identificar los espacios vacíos
 que marcan la separación entre caracteres. Alternativamente,
 el mismo CCA aplicado a la imagen binarizada de la placa permite aislar cada carácter
-como un componente distinto, aunque presenta limitaciones en casos de caracteres adheridos o solapados.
+como un componente distinto (ver figura~\ref{fig:cca-segmentacion-caracteres}),
+aunque presenta limitaciones en casos de caracteres adheridos o solapados~\cite{arafat2020connected}. 
 
 Finalmente, el reconocimiento de caracteres se realiza mediante redes neuronales artificiales (ANN),
-que actúan como clasificadores. Por ejemplo, un Perceptron multicapa (MLP)
+que actúan como clasificadores~\cite{surveyANPR}.
+Por ejemplo, un perceptron multicapa (MLP)
 procesa la entrada mediante una capa inicial de neuronas,
 seguida de una o varias capas ocultas que aprenden asociaciones complejas,
-y finalmente una capa de salida que genera la decisión de clasificación
-\cite{surveyANPR}.
+y finalmente una capa de salida que genera la decisión de clasificación (ver figura~\ref{fig:mlp-example}).
+
+\begin{figure}[ht]
+	\centering
+	\includegraphics[width=0.7\textwidth]{fig/proy/perceptron-multicapa-mnist.png}
+	\caption{Clasificación alfanumérica con MLP (tomado de~\cite{corochann_mnist_mlp}).}
+	\label{fig:mlp-example}
+\end{figure}
 
 Sin embargo, incluso con los mejores algoritmos, un ANPR puede requerir de hardware 
 adicional para maximizar su precisión. La condición física de la placa,
 formatos no estandarizados del diseño de placas, la calidad de la cámara, 
 iluminación, distorsión por movimiento, velocidad de procesamiento
-y memoria son algunos de los aspectos que afectan el rendimiento \cite{surveyANPR_IEEE}.
+y memoria son algunos de los aspectos que afectan el rendimiento~\cite{surveyANPR_IEEE}.
 Los sistemas clásicos son especialmente susceptibles a estas limitaciones.
 En adición, en los sistemas clásicos el error en cada etapa se propaga a 
 la siguiente, incrementando el error global y reduciendo su desempeño
 al eslabón más débil de la cadena.
-Como solución a ello, los sistemas modernos se apoyan en el aprendizaje automático
-de las características de las placas, lo cual les permite adaptarse más fácilmente a
-variaciones de captura de imagen y diseño o tipo de placa.
+
+Como respuesta a estas limitaciones, los sistemas modernos se apoyan en el aprendizaje automático
+mediante redes neuronales profundas, que aprenden directamente las características relevantes
+de las placas y pueden adaptarse mejor a las variaciones de diseño o captura.
+Este aprendizaje puede implementarse de dos maneras principales: 
+mediante una red unificada que realiza simultáneamente la detección y el reconocimiento, o
+mediante un esquema en dos etapas, donde una primera red se encarga de la detección de las placas en la imagen, 
+y una segunda red toma como entrada la región recortada para extraer la secuencia de caracteres.
+
+Antes de describir las técnicas concretas, conviene explicar por qué se adopta 
+esta separación lógica entre \emph{detección} y \emph{reconocimiento}.
+La detección localiza en la imagen las regiones que potencialmente contienen una placa
+(dibujando recuadros alrededor de los objetos de interés) y filtra el contenido irrelevante
+como el fondo o el resto del vehículo.
+El reconocimiento, por su parte, toma esas regiones recortadas y extrae 
+la información alfanumérica presente en ellas. 
+Esta división permite optimizar cada módulo para una tarea específica
+(localización robusta frente a lectura precisa)
+y reduce el cómputo al procesar únicamente las regiones relevantes.
+
+\section{Detección de objetos}
+La \emph{detección de objetos} consiste en la tarea de identificar y localizar elementos dentro de una imagen. 
+En términos generales, el objetivo es determinar qué objetos aparecen y en qué lugar se encuentran. 
+Para ello, el modelo analiza la imagen y estima, para cada objeto detectado, la clase a la que pertenece, 
+las coordenadas en el plano de la imagen que definen una caja delimitadora (\emph{bounding box}) 
+que encierra dicho objeto, y una medida de confianza que indica la probabilidad de que el objeto 
+pertenezca efectivamente a la clase asignada.
+
+Una \emph{clase} puede entenderse como una categoría abstracta que agrupa a todos los objetos 
+con características y estructura similares. Por ejemplo, las clases ``persona'', ``vehículo'' o ``placa'' 
+representan distintos tipos de elementos que pueden aparecer en una imagen, 
+cada uno definido por patrones visuales distintivos.
+
+En términos sencillos, la detección responde simultáneamente a las preguntas 
+``¿qué hay en la imagen?'' ---determinando la clase--- y ``¿dónde está?''
+---determinando su posición mediante la caja delimitadora---. 
+El resultado de un detector suele consistir en varias cajas superpuestas sobre la imagen, 
+cada una con su etiqueta y un valor de confianza. 
+
+\subsection{Tipos de arquitecturas populares}
+Se resumen a continuación, de forma introductoria, algunas de las arquitecturas más relevantes para la detección de objetos:
+
+\paragraph{R-CNN (Region-based CNN).}
+Introdujo la idea de proponer regiones candidatas en la imagen y procesarlas con una 
+red convolucional para clasificar y ajustar cajas. 
+Es conceptualmente simple y muy influyente,
+pero originalmente era costosa en tiempo porque procesaba cada propuesta por separado~\cite{girshick2015fastrcnn}.
+
+\paragraph{Faster R-CNN.}
+Mejora a R-CNN integrando la generación de propuestas en la propia red (Region Proposal Network). 
+Sigue siendo un enfoque en dos pasos (proponer regiones, luego refinar/clasificar),
+y suele ofrecer buena precisión, especialmente en escenarios donde la exactitud de la caja es importante.
+En general prioriza precisión frente a velocidad~\cite{NIPS2015_14bfa6bb}.
+
+\paragraph{YOLO (You Only Look Once).}
+YOLO es una familiar de modelos que proponen tratar la detección como un único problema de regresión:
+la imagen se procesa una sola vez y la red predice directamente las cajas y las probabilidades de clase.
+Esto lo hace muy rápido y adecuado para aplicaciones en tiempo real.
+A costa de eso, versiones muy simples pueden sacrificar algo de precisión en casos muy pequeños o densos,
+aunque las versiones modernas balancean muy bien velocidad y exactitud~\cite{redmon2016lookonceunifiedrealtime}.
 
 \section{Detección de matrículas mediante YOLO}
 
-En lo que respecta a la detección de matrículas, uno de los enfoques más utilizados
-en la actualidad es la familia de modelos YOLO (You Only Look Once).
-A diferencia de los detectores de dos etapas como R-CNN o Faster R-CNN,
-que primero generan propuestas de regiones y posteriormente realizan la clasificación,
-YOLO pertenece a los detectores de una sola etapa.
-Este enfoque permite que la red neuronal convolucional
-realice simultáneamente la regresión de las cajas delimitadoras
-y la predicción de clases en una sola pasada por la imagen, 
-retornando también la confianza que el modelo concede a la detección,
-lo que le confiere una gran ventaja en términos de velocidad.
-Es más propenso a errores de localidad, pero menos propenso a 
-falsos positivos sobre el fondo.
+En el contexto del reconocimiento automático de matrículas (ANPR), 
+la detección constituye la primera etapa del sistema, 
+encargada de localizar en la imagen la región donde se encuentra la placa vehicular.  
+Uno de los enfoques más extendidos y eficaces para esta tarea 
+es la ya mencionada familia de modelos YOLO (You Only Look Once).  
+Estos detectores procesan la imagen completa de una sola vez y generan, como salida,
+un conjunto de cajas delimitadoras con sus respectivas etiquetas y niveles de confianza.  
+Durante el entrenamiento, la red recibe imágenes con las placas anotadas mediante cajas,
+aprendiendo así a predecir su posición y clase; mientras que en la fase de inferencia,
+el modelo analiza una imagen nueva y devuelve las regiones donde considera que hay una placa.  
+Posteriormente, las detecciones con baja confianza se descartan mediante un paso de \emph{filtrado}, 
+de forma que sólo se conservan las regiones más probables para ser enviadas al módulo de reconocimiento 
+(ver figura~\ref{fig:plate-detection-example-yolo}).
 
-En el contexto de ANPR, la detección de matrículas constituye un caso particular de detección de objectos.
-La rapidez y precisión que ofrece YOLO lo convierten en una herramienta idónea para esta tarea,
-ya que permite identificar la región de interés (la placa vehicular) en condiciones diversas de iluminación,
-ángulos de captura, movimiento o ruido de la imagen.
-Esta detección robusta constituye la primera etapa del sistema,
-a partir de la cual es posible aplicar posteriormente el reconocimiento óptico de caracteres (OCR)
-mediante arquitecturas especializadas como los Compact Convolutional Transformers (CCT).
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=\textwidth]{fig/proy/plate-detection-example.png}
+	\caption{Ejemplo de detección de placa (tomado de~\cite{vina2024yolo11-anpr}).}
+	\label{fig:plate-detection-example-yolo}
+\end{figure}
+
+La rapidez y precisión que ofrece YOLO lo convierten en una herramienta idónea 
+para aplicaciones en tiempo real, como la vigilancia de tráfico o el control de accesos.  
+Su diseño permite identificar la región de interés (la placa) bajo condiciones variables 
+de iluminación, ángulo, movimiento o ruido en la imagen.  
+Además, al procesar toda la imagen en un único paso, 
+YOLO reduce el coste computacional frente a detectores de dos etapas 
+(como R-CNN o Faster R-CNN), que primero generan propuestas de regiones 
+y luego las clasifican.  
+Este enfoque de una sola etapa le confiere una ventaja significativa en velocidad, 
+aunque puede ser ligeramente más propenso a errores de localización fina.  
+En la práctica, sin embargo, las versiones modernas de YOLO 
+han alcanzado un equilibrio muy competitivo entre precisión y rendimiento, 
+lo que las hace especialmente adecuadas para la detección de matrículas vehiculares.
 
 YOLO realiza detección usando una única red neuronal. 
 Usa características de la imagen completa para predecir las cajas delimitadoras.
-Realiza la detección para todas las clases definidas al mismo tiempo. 
-Lo que significa que YOLO "razona" globalmente sobre la imagen completa.
-Para ello divide la imagen en una cuadrícula SxS. Si el centro 
+Realiza la detección para todas las clases definidas al mismo tiempo,
+lo que significa que YOLO ``razona'' globalmente sobre la imagen completa.
+Para ello divide la imagen en una cuadrícula $S\times S$. Si el centro 
 de un objeto cae dentro de una celda de la cuadrícula, esa celda
-es responsable de detectar el objeto. Cada celda predice B cajas 
+es responsable de detectar el objeto. Cada celda predice $B$ cajas 
 delimitantes y confianza para esas cajas. La confianza refleja 
-que tan seguro está el modelo que la caja contiene un objeto y
-que preciso este está de a que corresponde lo que predice. 
-Formalmente, se define como $Pr(object)*\times IoU_{pred}^{truth}$.
+qué tan seguro está el modelo que la caja contiene un objeto y
+qué tan seguro este está de la clase a la que corresponde lo que predice. 
 
-Cada predicción consiste de 5 elementos, x, y, w, h y confianza. 
-La (x, y) representa el centro de la caja relativo a los límites
-de la celda de la cuadrícula. El ancho y alto son relativos a la imagen completa. 
-La confianza representa la intersección sobre la unión (IoU) entre
-la caja predicha y etiqueta verdadera. Cada celda también predice C 
-probabilidades de clase condicional $Pr(Clase_{i}|Objeto)$.
-Solo se calcula un conjunto de probabilidad de clase por celda,
-independientemente del número de cajas B. 
+YOLO realiza la predicción de cajas delimitadoras y una puntuación asociada para cada caja. 
+Cada predicción contiene 5 elementos, $x$, $y$, $w$, $h$ y confianza. 
+La coordenada $(x, y)$ representa el centro de la caja relativo a los límites
+de la celda de la cuadrícula. El ancho $w$ y alto $h$ son relativos a la imagen completa. 
+La confianza que devuelve la red es una puntuación que el modelo estima y cuyo objetivo
+es aproximar la probabilidad de que la caja contenga un objeto junto con la calidad del ajuste de la caja. 
+En la formulación original de YOLO esta confianza se estima como
+$Pr(\text{object}) \times \text{IoU}_{\text{pred}}^{\text{truth}}$; 
+es decir, el producto entre la probabilidad de que haya un objeto en esa caja y
+la intersección sobre la unión (IoU) entre la caja predicha y la caja verdadera,
+siendo esta última la métrica utilizada para indicar la calidad de la estimación geométrica de la caja.
 
-La arquitectura consta de varias capas convolucionales, seguida
-de unas pocas capas totalmente conectadas \ref{fig:capas-arquitectura-yolo}.
-Estas capas normalmente se hallan pre entrenadas en conjuntos de datos grandes,
-como PASCAL VOC e ImageNet 2012 hasta alcanzar 88\% de precisión
-en los mejores 5 modelos. A este se le agrega en el entrenamiento 
-final una capa de reducción, seguido de capas convolucionales adicionales
-inicializada con pesos aleatorios.
-A lo largo de sus versiones (YOLOv3, YOLOv4, YOLOv5, YOLOv7/8, y la más reciente YOLOv11),
-la arquitectura ha incorporado mejoras en la extracción de características.
-Con el tiempo, las versiones modernas han reemplazado estas capas por backbones más eficientes
-en hardware limitado y brindando un mejor balance entre precisión y rapidez \cite{redmon2016lookonceunifiedrealtime}.
+Hay que distinguir dos momentos: durante el entrenamiento 
+la IoU se calcula explícitamente entre la predicción y la etiqueta 
+(ese valor forma parte del ``objetivo'' para la componente de confianza en la función de pérdida);
+en cambio, en inferencia no es posible calcular la IoU frente a la etiqueta
+, porque la etiqueta no existe, en su lugar la red simplemente devuelve su estimación de confianza
+---es decir, una puntuación que pretende correlacionar con $Pr(\text{object})\times IoU $
+aunque no sea la IoU real calculable sin la etiqueta.
+
+Adicionalmente, cada celda de la cuadrícula predice $C$ probabilidades condicionales de clase 
+$Pr(\text{Clase}_i \mid \text{Objeto})$.
+En la formulación clásica de YOLO se estima un único vector de probabilidades de clase por celda
+(independientemente del número de cajas $B$ que predice la celda),
+de modo que la probabilidad conjunta para una caja y una clase puede expresarse aproximando 
+$Pr(\text{Clase}_i,\text{Objeto}) \approx Pr(\text{Clase}_i\mid\text{Objeto})\cdot \Pr(\text{Objeto})$,
+usando la confianza para aproximar $Pr(\text{Objeto})$.
 
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=\textwidth]{fig/proy/yolo-arquitectura-mas-grid.png}
-	\caption{Arquitectura original del detector de objetos YOLO}
+	\caption{Arquitectura original del detector de objetos YOLO (tomado de ~\cite{redmon2016lookonceunifiedrealtime}).}
 	\label{fig:capas-arquitectura-yolo}
 \end{figure}
 
-\subsection{Mejoras de YOLOv11}
-La versión más reciente, YOLOv11,
-introduce diversas mejoras que optimizan tanto la velocidad
-como la precisión de detección \cite{khanam2024yolov11overviewkeyarchitectural}:
+La arquitectura consta de varias capas convolucionales, seguida
+de unas pocas capas totalmente conectadas (ver figura~\ref{fig:capas-arquitectura-yolo}).
+Estas capas normalmente se hallan preentrenadas en conjuntos de datos grandes,
+como PASCAL VOC e ImageNet 2012 hasta alcanzar 88\% de precisión
+en los mejores 5 modelos. A este se le agrega en el entrenamiento 
+final una capa de reducción, seguido de capas convolucionales adicionales
+inicializadas con pesos aleatorios.
+A lo largo de sus versiones (YOLOv3, YOLOv4, YOLOv5, YOLOv7/8, y la más reciente YOLOv11),
+la arquitectura ha incorporado mejoras en la extracción de características.
+Con el tiempo, las versiones modernas han reemplazado estas capas por \emph{backbones} 
+(o red troncal) \footnote{El \emph{backbone} o red troncal es el elemento de la arquitectura
+del modelo encargado de la extracción automática de características de los datos de entrada,
+y es por lo general una red convolucional.} más eficientes
+en hardware limitado y brindando un mejor balance entre precisión y rapidez~\cite{redmon2016lookonceunifiedrealtime}.
 
-\begin{itemize}
-    \item \textbf{Bloque C3k2:} una implementación del CSP Bottleneck con dos 
-		convoluciones de kernel pequeño, aumentando eficiencia y velocidad sin sacrificar precisión.
-    \item \textbf{Módulo C2PSA:} combina redes parciales con mecanismos de autoatención,
-		mejorando la captura de contexto en varias capas.
-    \item \textbf{SPPF (Spatial Pyramid Pooling - Fast):} permite capturar información contextual a múltiples escalas,
-		crucial para detectar objetos de diferentes tamaños.
-    \item \textbf{Versatilidad en tamaños de modelo:} ofrece versiones que van desde nano hasta extra-grande,
-		adaptándose a dispositivos de borde o entornos de alto rendimiento.
-\end{itemize}
+\subsection*{Mejoras de YOLOv11}
 
-Aunque la versión original de YOLO presentaba dificultades para detectar objetos muy pequeños, 
-YOLOv11 introduce mejoras en la captura de información a múltiples escalas mediante módulos como SPPF. 
-Si bien esta limitación no representa un problema significativo en el contexto de la detección de matrículas, 
-resalta la capacidad de la arquitectura moderna para abordar distintos tamaños de objeto.
+La versión más reciente de la familia, YOLOv11, 
+introduce una serie de mejoras en su arquitectura respecto a la primera versión que buscan optimizar el equilibrio
+entre velocidad de procesamiento y precisión de detección~\cite{khanam2024yolov11overviewkeyarchitectural}. 
+Estas mejoras permiten que el modelo sea más eficiente sin perder capacidad de generalización,
+adaptándose tanto a entornos de cómputo limitados como a aplicaciones de alto rendimiento.
+
+Entre las principales innovaciones se encuentran:
+
+\paragraph{Bloque C3k2.} 
+Este bloque reemplaza partes de la estructura interna tradicional por una forma más ligera 
+y eficiente de procesar las imágenes. 
+Utiliza convoluciones de menor tamaño para reducir la carga computacional,
+logrando que el modelo procese más rápidamente sin afectar la calidad con que extrae las características visuales.
+
+\paragraph{Módulo C2PSA.} 
+Incorpora un mecanismo de atención que permite al modelo concentrarse en las regiones más relevantes de la imagen. 
+En términos simples, esto significa que la red aprende a ``dar más importancia''
+a las zonas donde es más probable encontrar objetos, 
+mejorando su capacidad para interpretar escenas complejas o con objetos parcialmente superpuestos.
+
+\paragraph{SPPF (Spatial Pyramid Pooling – Fast).} 
+Este módulo realiza un análisis de la imagen a diferentes escalas de manera simultánea. 
+Así, el modelo puede detectar con mayor precisión objetos grandes y pequeños dentro de una misma escena, 
+sin necesidad de aumentar significativamente el tiempo de procesamiento. 
+Esta característica es especialmente útil en contextos como el reconocimiento de placas, 
+donde el tamaño y la posición del objeto pueden variar entre imágenes.
+
+\paragraph{Versatilidad en tamaños de modelo.} 
+YOLOv11 ofrece distintas configuraciones,
+desde versiones muy ligeras (\emph{nano}) hasta variantes de alto rendimiento (\emph{extra-large}), 
+lo que permite su implementación tanto en dispositivos embebidos con recursos limitados como en servidores dedicados. 
+De esta manera, el modelo puede adaptarse a los requerimientos específicos del entorno
+de despliegue sin comprometer su desempeño.
+
+En comparación con las versiones anteriores,
+YOLOv11 mejora su capacidad para capturar información a múltiples escalas y manejar distintos tamaños de objeto. 
+
+\section{Reconocimiento de caracteres}
+
+Una vez localizada la región donde se encuentra la matrícula, 
+el siguiente paso consiste en interpretar el contenido alfanumérico que aparece en ella. 
+Este proceso se conoce como reconocimiento óptico de caracteres (\emph{Optical Character Recognition}, OCR). 
+En términos generales, el reconocimiento toma como entrada una imagen 
+---en este caso, el recorte de la placa--- y produce como salida una secuencia de texto, 
+correspondiente a los caracteres presentes en la imagen.
+
+El objetivo del OCR es traducir patrones visuales en símbolos legibles por una máquina. 
+A diferencia de la detección, que se enfoca en localizar objetos, 
+el reconocimiento requiere identificar con precisión la forma y estructura de cada carácter, 
+incluso en condiciones difíciles de iluminación, inclinación, suciedad o distorsión. 
+Tradicionalmente, esto se hacía segmentando la imagen carácter por carácter y aplicando clasificadores individuales. 
+Sin embargo, los métodos modernos utilizan redes neuronales profundas capaces de procesar la secuencia completa de la imagen, 
+aprendiendo directamente la correspondencia entre píxeles y texto sin necesidad de segmentar manualmente.
 
 \section{Compact Convolutional Transformers (CCT)}
 
-Por otro lado, los Transformers se han alzado como el estándar en lo que respecta al procesamiento de lenguaje.
-Sin embargo, estos sistemas requieren gran cantidad de parámetros y no son adecuados
-para conjuntos de datos relativamente pequeños.
-Una alternativa a este problema son los \textbf{Compact Convolutional Transformer (CCT)}.
-Estos Transformers pueden entrenarse desde cero con conjuntos de datos
-pequeños (como los disponibles en ANPR), requieren menor coste computacional,
-y previenen el sobreajuste, además de requerir menos parámetros (0.28M-3.8M en modelos reportados).
-Por ejemplo, se ha reportado rendimiento comparable o superior a ResNet en el conjunto 
-de datos CIFAR-10/100 (98.00\% de precisión)
-y Flower-102 con un 15\% del tamaño de ResNet50 \cite{hassani2021escaping}.
+El reconocimiento de caracteres a partir de imágenes, como en el caso de las matrículas vehiculares, 
+requiere modelos capaces de identificar patrones visuales que forman una secuencia coherente de símbolos. 
+En este trabajo, dicha tarea se realiza mediante un modelo basado en transformers, 
+una arquitectura que ha demostrado gran eficacia en tareas de secuencias, 
+como el procesamiento del lenguaje natural y, más recientemente, en visión por computadora.
 
-Al ampliar ViT-Lite, una versión más pequeña y compacta de ViT (Vision Transformer), 
-introduciendo un agrupamiento de secuencias y formando así el \textbf{Compact Vision Transformer}
-(CVT). Además, al iterar agregando bloques convolucionales
-al paso de segmentación en unidades básicas se logra crear el CCT \ref{fig:cct-architecture}.
+\subsection{Motivación y visión general}
 
-\begin{figure}[H]
-	% \placeholderimage{0.3\textwidth}
-	\includegraphics[width=\textwidth]{fig/proy/comparison-vit-cvt-cct.png}
-	\caption{Comparación de arquitectura ViT, CVT y CCT}
-	\label{fig:cct-architecture}
+Los \emph{transformers} tradicionales se caracterizan por su mecanismo de \emph{autoatención}, 
+el cual permite al modelo determinar qué partes de una secuencia son más relevantes entre sí. 
+En texto, estas unidades suelen ser palabras; en imágenes, se consideran pequeñas regiones o fragmentos.  
+Esta capacidad de aprender dependencias globales hace que los Transformers sean herramientas muy poderosas, 
+aunque a costa de un alto número de parámetros —entre 60 y 100 millones en el modelo original 
+de~\cite{vaswani2023attentionneed}--- y la necesidad de grandes volúmenes de datos para su entrenamiento.
+
+En el contexto de reconocimiento de matrículas (ANPR), donde los conjuntos de datos suelen ser 
+de tamaño moderado, estas exigencias hacen poco práctico el uso de Transformers convencionales.  
+Por ello, surgen variantes más ligeras que combinan la eficiencia de las convoluciones con 
+la capacidad de modelado contextual de la atención. Entre ellas se encuentra el 
+Compact Convolutional Transformer (CCT), que equilibra precisión y eficiencia 
+con un número mucho menor de parámetros (del orden de 0.3 a 3.8 millones en configuraciones reportadas) 
+y un costo computacional reducido~\cite{hassani2021escaping}.
+
+\subsection{De ViT a CCT: evolución de arquitecturas}
+
+El Vision Transformer (ViT) fue la primera adaptación directa de los Transformers al dominio visual.  
+ViT divide la imagen en fragmentos cuadrados no solapados (denominados \emph{patches}) que se procesan 
+como una secuencia de vectores~\cite{dosovitskiy2021imageworth16x16words}.
+Cada fragmento se convierte en una representación numérica (\emph{embedding}) que resume su contenido visual, 
+y el modelo aprende las relaciones entre ellos mediante autoatención.  
+Este enfoque demostró gran potencial, pero presenta dos limitaciones: 
+(1) la pérdida parcial de información espacial en los bordes entre fragmentos, 
+y (2) su dependencia de grandes conjuntos de entrenamiento.
+
+Para abordar estas limitaciones, surgió el Compact Vision Transformer (CVT), 
+una versión reducida de ViT que agrupa las secuencias de fragmentos y reduce el número de parámetros.  
+Posteriormente, al incorporar capas convolucionales en la etapa inicial de extracción de características, 
+se obtiene el Compact Convolutional Transformer (CCT)~\cite{hassani2021escaping}.  
+Esta evolución ---de ViT a CVT y luego a CCT--- se ilustra en la figura~\ref{fig:cct-architecture}.
+
+\begin{figure}[hb]
+    \centering
+    \includegraphics[width=\textwidth]{fig/proy/comparison-vit-cvt-cct.png}
+	\caption{Evolución de arquitecturas basadas en Transformers: ViT, CVT y CCT (tomado de~\cite{hassani2021escaping}).}
+    \label{fig:cct-architecture}
 \end{figure}
 
-Los Transformer estándar toman como entrada un vector de secuencia conocido como unidad de representación o símbolo.
-En el caso de los Transformers aplicados al procesamiento de lenguaje natural (NLP).
-El orden de las palabras provee una secuencia natural para orden datos, pero esto no es claro en imágenes. 
-Para segmentar en unidades básicas una imagen, ViT subdivide una imagen en fragmento de imágenes cuadradas no solapados
-en orden raster-scan. La secuencia de fragmento de imágenes, $x_{p}\in\mathbb{R}^{H\times (P^{2}C)}$ 
-con H número de fragmentos de imagen, C canales y fragmento de imagen de tamaño P, 
-es aplanada en un vector de dimensión 1D y transformada en un 
-vector latente de dimensión d. Esto es equivalente a una capa convolucional con d filtros, 
-con kernel de tamaño $P\times P$ y stride. Este método tiene la desventaja de tener 
-pérdidas de información en regiones límite.
+\subsection{Arquitectura y funcionamiento del CCT}
 
-Por el contrario, CCT introduce sesgo al modelo, reemplazando el fragmento de imagen con una
-simple capa convolucional, con activación Relu y max pool, resultando en un 
-mapa de características $x\in \mathbb{R}^{H\times W\times C}$ e inicialización
-$x_{0}=MaxPool(ReLU(Conv2d(x)))$.
-Esto reemplaza representación vectorial lineal de ViT y le permite al modelo mantener información
-espacial local de bordes y formas. En consecuencia, la red captura tanto
-dependencias locales (convolución) como globales (auto-atención).
+A diferencia de ViT, que transforma directamente los fragmentos de imagen en vectores independientes, 
+el CCT introduce un bloque convolucional inicial que extrae mapas de características 
+antes de aplicar la atención.  
+Este bloque, compuesto por convoluciones seguidas de activaciones ReLU y max-pooling, 
+genera un mapa de características $x \in \mathbb{R}^{H \times W \times C}$, 
+donde $H$ y $W$ representan las dimensiones espaciales y $C$ el número de canales.  
+De esta forma, el modelo conserva la información espacial local y mejora su robustez frente 
+a inclinaciones, bordes difusos o ruido en las imágenes.
 
-Para mapear salida secuencial a un índice de clase singular ViT y la mayoría de 
-clasificadores basados en Transformers usan BERT. En otras ocasiones se utiliza
-agrupamiento promedio global (promediando las unidades de entrada). CCT, en su lugar, utiliza
-SeqPool (agrupamiento secuencial por atención),
-un método basado en atención el cual agrupa la secuencia de salida en unidades de entrada. 
-Esto se debe a que la secuencia de salida contiene información relevante acerca de 
-diferentes partes de la imagen de entrada, de manera que preservar esta información
-mejore el comportamiento, y no aumente los parámetros en comparación a las unidades de entrada aprendidos. 
-A su vez, decrece el coste computacional al no retroalimentar las unidades de entrada y mejora
-la estabilidad en conjuntos de datos pequeños.
+Posteriormente, la secuencia de características se procesa mediante bloques Transformer, 
+que aplican autoatención para capturar relaciones entre distintas regiones de la imagen.  
+Así, el modelo combina dependencias locales (aprendidas por las convoluciones) y globales 
+(modeladas por la atención), obteniendo una representación visual más completa.
 
-En el contexto de ANPR, el CCT se utiliza como extractor de características visuales de la placa.
-La secuencia de unidades de entrada generada representa regiones espaciales de la matrícula,
-que posteriormente se alinean con las etiquetas de caracteres mediante una capa de CTC loss.
-Este enfoque extremo a extremo evita la segmentación explícita de caracteres y
-mejora la robustez frente a inclinaciones,
-deformaciones y ruido en las imágenes de placas.
+Para generar una representación final sin añadir parámetros adicionales, 
+CCT emplea un mecanismo denominado Sequential Pooling (\emph{SeqPool}).  
+Este método pondera las salidas de cada posición mediante atención 
+y las combina de forma adaptativa, 
+priorizando las regiones más informativas de la imagen sin necesidad de añadir nuevas capas de clasificación.
+
+Finalmente, la salida secuencial del modelo se alinea con la secuencia real de caracteres 
+mediante la función de pérdida Connectionist Temporal Classification (CTC).  
+La CTC permite entrenar el modelo sin segmentar manualmente cada carácter, 
+ya que alinea dinámicamente las predicciones del modelo con la secuencia de texto esperada.  
+Esto resulta especialmente útil en imágenes donde los caracteres están unidos, deformados 
+o parcialmente cubiertos.
+
+\section{El efecto del desempeño de los hiperparámetros en el aprendizaje automático}
 
 El entrenamiento de modelos de aprendizaje profundo implica la definición de un conjunto de hiperparámetros,
 tales como la tasa de aprendizaje, el tamaño de lote, el número de capas,
-el factor de regularización o las políticas de aumento de datos.
-A diferencia de los parámetros internos de la red, que son aprendidos durante el entrenamiento,
+el factor de regularización o las políticas de aumento de datos, entro otros.
+A diferencia de los pesos internos de la red, que son aprendidos durante el entrenamiento,
 los hiperparámetros deben ser definidos previamente,
-y su configuración incide de manera directa en la capacidad de generalización del modelo.
+y su configuración incide de manera directa en la capacidad de generalización del modelo
+\cite{hardt2021patternspredictionsactionsstory}.
 
 En tareas como la detección y el reconocimiento automático de placas vehiculares,
 la correcta selección de hiperparámetros resulta crítica, 
@@ -227,7 +425,7 @@ Una elección inadecuada puede llevar al sobreajuste
 o al subajuste (la red no alcanza a aprender patrones relevantes),
 comprometiendo la precisión del sistema.
 
-En arquitecturas de detección como YOLO, hiperparámetros tales como la programación de la tasa de aprendizaje,
+En arquitecturas de detección como YOLO, hiperparámetros tales como la tasa de aprendizaje,
 el tamaño de las imágenes de entrada, el número de épocas de entrenamiento y las técnicas de aumento 
 (por ejemplo, Mosaic o MixUp) afectan significativamente la precisión y la velocidad de inferencia.
 De manera análoga, en modelos de reconocimiento basados en Compact Convolutional Transformers (CCT),
@@ -267,7 +465,7 @@ como la precisión en el reconocimiento de caracteres. Entre las más empleadas 
 		sobre el total de objetos presentes en la imagen.
 		Un valor alto indica pocos falsos negativos.
 	\item \textbf{mAP50 (mean Average Precision a IoU=0.5):} métrica estándar en visión por computadora 
-		para detección de objetos. Calcula el promedio de la precisión en distintos umbrales,
+		para detección de objetos. Calcula el promedio de la precisión con distintos umbrales,
 		considerando una detección como correcta si la superposición entre caja predicha
 		y caja verdadera supera un 50\% de IoU (\textit{Intersection over Union}). 
 		Resume el balance entre precisión y exhaustividad en una sola medida.
@@ -284,8 +482,8 @@ como la precisión en el reconocimiento de caracteres. Entre las más empleadas 
 
 	\item \textbf{Precisión de placas:} porcentaje de placas en las que la secuencia completa de caracteres
 		fue reconocida correctamente. Esta métrica es estricta,
-		ya que considera la matrícula como una unidad única
-		(similar al concepto de WER (Word Error Rate),
-		pero aplicado directamente a la secuencia completa).
+		ya que considera la matrícula como una unidad única. 
+		Esto es idéntico al concepto de WER ---Word Error Rate---~\cite{vargoorani2024license},
+		pero aplicada directamente a la secuencia completa.
 \end{itemize}
 

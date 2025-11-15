@@ -12,6 +12,10 @@ doc/cronograma/*aux
 doc/cronograma/*log
 doc/cronograma/*out
 doc/cronograma/*pdf
+doc/cronograma/*ods
+doc/presentacion/
+doc/plantilla_presentacion/
+doc/firmas/
 doc/cap1/*aux
 doc/cap1/*log
 doc/cap1/*pdf
@@ -30,6 +34,9 @@ doc/cap1/main.blg
 doc/cap1/main.ilg
 doc/cap1/main.nls
 doc/cap1/*.back
+doc/cap1/dibujos/
+doc/cap1/fig/proy/*.svg
+doc/cap1/svg*
 
 # programs for experiments
 src/yolo_fail_filter.py
@@ -37,18 +44,17 @@ src/slurm_lpd_eval.sh
 src/slurm_lpd_compare.sh
 src/slurm_lpd_train_*.sh
 src/slurm_lpr_train_*.sh
-src/models/ocr/cct_xs_v1_global_model_config*
-src/models/ocr/cct_xs_v1_global_plate_config*
-src/models/ocr/*csv
-doc/cronograma/*ods
 
 src/test_*
+src/*_test.py
 src/eval_*
 src/wb_*
 src/metricas*
+src/ablation*
 
-models/
 runs/
+src/models/ocr/
+src/models/yolo/
 
 #Python vritual enviroment
 myenv310

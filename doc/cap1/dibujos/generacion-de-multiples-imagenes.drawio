@@ -15,14 +15,14 @@
             <mxPoint y="-10" as="offset" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="CbLp9DnRkgPNGUZ_RYR3-1" value="Iteración&lt;div&gt;&amp;nbsp;==&amp;nbsp;&lt;br&gt;número de iteraciones&lt;/div&gt;" style="rhombus;whiteSpace=wrap;html=1;fillColor=#B9E0A5;strokeColor=#000000;fontColor=#000000;" parent="1" vertex="1">
+        <mxCell id="CbLp9DnRkgPNGUZ_RYR3-1" value="¿Iteración&lt;div&gt;&amp;nbsp;==&amp;nbsp;&lt;br&gt;número de iteraciones?&lt;/div&gt;" style="rhombus;whiteSpace=wrap;html=1;fillColor=#B9E0A5;strokeColor=#000000;fontColor=#000000;" parent="1" vertex="1">
           <mxGeometry x="320" y="280" width="120" height="110" as="geometry" />
         </mxCell>
         <mxCell id="CbLp9DnRkgPNGUZ_RYR3-13" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;fontColor=#000000;" parent="1" source="CbLp9DnRkgPNGUZ_RYR3-2" target="CbLp9DnRkgPNGUZ_RYR3-4" edge="1">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
         <mxCell id="CbLp9DnRkgPNGUZ_RYR3-2" value="inicio" style="ellipse;whiteSpace=wrap;html=1;fillColor=#B9E0A5;strokeColor=#000000;fontColor=#000000;" parent="1" vertex="1">
-          <mxGeometry x="335" y="70" width="90" height="40" as="geometry" />
+          <mxGeometry x="115" y="120" width="90" height="40" as="geometry" />
         </mxCell>
         <mxCell id="CbLp9DnRkgPNGUZ_RYR3-11" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" parent="1" source="CbLp9DnRkgPNGUZ_RYR3-3" target="CbLp9DnRkgPNGUZ_RYR3-1" edge="1">
           <mxGeometry relative="1" as="geometry" />
@@ -34,7 +34,7 @@
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
         <mxCell id="CbLp9DnRkgPNGUZ_RYR3-4" value="Definir tipos de placas a probar (eg 256-nn, 256-nnn, etc)" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#CDA2BE;strokeColor=#000000;fontColor=#000000;" parent="1" vertex="1">
-          <mxGeometry x="320" y="130" width="120" height="60" as="geometry" />
+          <mxGeometry x="100" y="205" width="120" height="60" as="geometry" />
         </mxCell>
         <mxCell id="CbLp9DnRkgPNGUZ_RYR3-10" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;fontColor=#000000;" parent="1" source="CbLp9DnRkgPNGUZ_RYR3-7" target="CbLp9DnRkgPNGUZ_RYR3-8" edge="1">
           <mxGeometry relative="1" as="geometry" />
@@ -48,7 +48,7 @@
         <mxCell id="CbLp9DnRkgPNGUZ_RYR3-8" value="Generación de placas" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#CDA2BE;fontColor=#000000;strokeColor=#000000;" parent="1" vertex="1">
           <mxGeometry x="490" y="390" width="120" height="60" as="geometry" />
         </mxCell>
-        <mxCell id="CbLp9DnRkgPNGUZ_RYR3-17" value="No" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontColor=#000000;" parent="1" vertex="1">
+        <mxCell id="CbLp9DnRkgPNGUZ_RYR3-17" value="&lt;font style=&quot;&quot;&gt;No&lt;/font&gt;" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontColor=#000000;labelBackgroundColor=default;" parent="1" vertex="1">
           <mxGeometry x="440" y="308" width="40" height="30" as="geometry" />
         </mxCell>
         <mxCell id="CbLp9DnRkgPNGUZ_RYR3-21" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=1;entryDx=0;entryDy=0;fontColor=#000000;" parent="1" source="CbLp9DnRkgPNGUZ_RYR3-19" target="CbLp9DnRkgPNGUZ_RYR3-1" edge="1">
@@ -57,10 +57,10 @@
           </mxGeometry>
         </mxCell>
         <mxCell id="CbLp9DnRkgPNGUZ_RYR3-19" value="Guardar imágen&lt;div&gt;y etiqueta&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#CDA2BE;fontColor=#000000;strokeColor=#000000;" parent="1" vertex="1">
-          <mxGeometry x="160" y="410" width="120" height="60" as="geometry" />
+          <mxGeometry x="100" y="410" width="120" height="60" as="geometry" />
         </mxCell>
         <mxCell id="CbLp9DnRkgPNGUZ_RYR3-22" value="Finalizar programa" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#CDA2BE;fontColor=#000000;strokeColor=#000000;" parent="1" vertex="1">
-          <mxGeometry x="150" y="305" width="120" height="60" as="geometry" />
+          <mxGeometry x="100" y="305" width="120" height="60" as="geometry" />
         </mxCell>
         <mxCell id="CbLp9DnRkgPNGUZ_RYR3-28" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=1;entryY=0.5;entryDx=0;entryDy=0;fontColor=#000000;" parent="1" source="CbLp9DnRkgPNGUZ_RYR3-25" target="CbLp9DnRkgPNGUZ_RYR3-27" edge="1">
           <mxGeometry relative="1" as="geometry" />
@@ -76,8 +76,8 @@
             <mxPoint x="139.9999999999999" y="520" as="targetPoint" />
             <Array as="points">
               <mxPoint x="550" y="610" />
-              <mxPoint x="140" y="610" />
-              <mxPoint x="140" y="440" />
+              <mxPoint x="70" y="610" />
+              <mxPoint x="70" y="440" />
             </Array>
           </mxGeometry>
         </mxCell>
@@ -93,7 +93,7 @@
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
         <mxCell id="CbLp9DnRkgPNGUZ_RYR3-27" value="Aplicar aumento de datos" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#CDA2BE;fontColor=#000000;strokeColor=#000000;" parent="1" vertex="1">
-          <mxGeometry x="305" y="505" width="120" height="60" as="geometry" />
+          <mxGeometry x="320" y="505" width="120" height="60" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>

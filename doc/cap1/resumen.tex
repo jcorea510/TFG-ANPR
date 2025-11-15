@@ -1,22 +1,29 @@
 \chapter*{Resumen}
 \thispagestyle{empty}
 
-La presente tesis abarca los detalles del desarrollo de un prototipo
+La presente tesis describe el desarrollo de un prototipo
 de sistema para el reconocimiento automático de números de placa (ANPR),
-que se pondrá a disposición del Campus Tecnológico Local San José,
-para el posterior desarrollo de un sistema de gestión inteligente de estacionamiento. 
+pensado para su futura integración en un sistema de gestión inteligente de estacionamientos
+en el Campus Tecnológico Local San José.
 
-El sistema ANPR se basa en modelos de aprendizaje automático. El primer modelo, llamado YOLO,
-detecta la región en la que se ubica la placa del automóvil en un video,
-mientras que el segundo modelo, llamado Fast Plate OCR, reconoce y extrae el texto de la placa.
-También, se especifican los detalles del trabajo generando imágenes sintéticas con 
-los cuales se entrenan los modelos, y se evalúa el desempeño 
-del sistema y sus partes usando imágenes reales.
+El diseño del sistema ANPR plantea en dos etapas:
+detección de la placa vehicular y reconocimiento de caracteres.
+Para la detección se emplea la arquitectura YOLO, 
+ajustada para detectar la región en la que se ubica la placa de los vehículos.
+Para el reconocimiento se utiliza Fast-Plate-OCR,
+adaptado al estilo tipográfico y variedad de placas costarricenses.
+Dado el tamaño limitado del conjunto de datos, se desarrolla un generador
+de imágenes sintéticas y un esquema de aumento de datos 
+para entrenar el módulo de reconocimiento de caracteres.
+Finalmente, se realizaron experimentos para evaluar del desempeño tanto de cada componente del
+sistema por separado como del sistema integrado.
 
 El sistema desarrollado alcanzó $98.4\%$ de precisión en el 
-reconocimiento exacto en placas vehiculares costarricenses
+reconocimiento en placas vehiculares costarricenses
 y $93.5\%$ de precisión de la detección de la región donde 
 se encuentra la placa vehicular.
+El sistema integrado procesa video a $3.84\pm 0.79$ FPS,
+con una latencia media de $299\pm 69.7$ ms.
 
 \bigskip
 
@@ -27,21 +34,21 @@ se encuentra la placa vehicular.
 \chapter*{Abstract}
 \thispagestyle{empty}
 
-This thesis covers the details of the development of a prototype
-system for automatic license plate recognition (ANPR), 
-which will be made available to the San José Local Technology Campus 
-for the subsequent development of an intelligent parking management system.
+This thesis describes the development of a prototype system for automatic license plate recognition (ANPR),
+designed for future integration into an intelligent parking management system 
+at the San José Local Technology Campus.
 
-The ANPR system is based on machine learning models.
-The first model, called YOLO, detects the region where the car's license plate is located in a video,
-while the second model, called Fast Plate OCR, recognizes and extracts the text from the license plate.
-The details of the work are also specified, generating synthetic images with which the models are trained,
-and the performance of the system and its parts is evaluated using real images.
+The ANPR system design consists of two stages: vehicle license plate detection and character recognition.
+The YOLO architecture is used for detection, adjusted to detect the region where the vehicle license plate is located.
+Fast-Plate-OCR is used for recognition, adapted to the typographic style and variety of Costa Rican license plates.
+Given the limited size of the dataset, a synthetic image generator and a data augmentation scheme 
+were developed to train the character recognition module.
+Finally, experiments were conducted to evaluate the performance of each component of the system separately 
+and of the integrated system.
 
-The developed system achieved $98.4\%$ accuracy in the 
-exact recognition of Costa Rican license plates
-and $93.5\%$ accuracy in detecting the region where 
-the license plate is located.
+The developed system achieved 98.4\% accuracy in recognizing Costa Rican license plates
+and 93.5\% accuracy in detecting the region where the license plate is located.
+The integrated system processes video at $3.84\pm 0.79$ FPS, with an average latency of $299\pm 69.7$ ms.
 
 \bigskip
 
