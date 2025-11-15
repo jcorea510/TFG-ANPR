@@ -195,12 +195,12 @@ if __name__ == "__main__":
                        help='Processing mode: image or video')
     parser.add_argument('--input', '-i', required=True,
                        help='Input file path (image/video) or "webcam" for camera')
-    parser.add_argument('--yolo-model', default='models/yolo/best.pt',
+    parser.add_argument('--yolo-model', default='models/best_yolo.pt',
                        help='Path to YOLO model (default: models/yolo/best.pt)')
-    parser.add_argument('--ocr-model', default='models/ocr/ckpt-epoch_58-acc_0.913.keras',
-                       help='Path to OCR model (default: models/ocr/ckpt-epoch_52-acc_0.914.keras)')
-    parser.add_argument('--config', default='models/ocr/plate_config.yaml',
-                       help='Path to plate config file (default: models/ocr/plate_config.yaml)')
+    parser.add_argument('--ocr-model', default='models/best_ocr.keras',
+                       help='Path to OCR model (default: models/best_ocr.keras)')
+    parser.add_argument('--config', default='models/plate_config.yaml',
+                       help='Path to plate config file (default: models/plate_config.yaml)')
     
     args = parser.parse_args()
     

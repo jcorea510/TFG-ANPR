@@ -15,6 +15,8 @@ CHAR_COLORS = {
     "n": "blue"  # fallback
 }
 
+# order is important when plates
+# has same code but different amount of characters
 PATTERNS = {
     "265-nn":     "nn",
     "265-nnn":    "nnn",
