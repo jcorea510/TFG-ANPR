@@ -3,7 +3,10 @@
 ## Revisión general:
 
 La detección y reconocimiento de números de placas en este proyecto
-es realizada mediante YOLO11 (detección) y Fast-Plate-OCR (reconocimiento).
+es realizada mediante dos etapas extremo a extremo utilizando
+YOLO11 (detección) y Fast-Plate-OCR (reconocimiento).
+
+<img src="./doc/cap1/fig/proy/diagrama-bloques-alpr.drawio.png" alt="diagrama-bloques-alpr.png" width="720"/>
 
 ### Detección de placa con YOLO:
 
