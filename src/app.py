@@ -4,6 +4,9 @@ import numpy as np
 import keras
 import argparse
 import time
+import csv
+import os
+from datetime import datetime
 
 from fast_plate_ocr.train.model.config import load_plate_config_from_yaml
 from fast_plate_ocr.train.utilities import utils
@@ -57,7 +60,70 @@ class PlateRecognizer:
         )
         return plate, probs
 
-def process_frame(frame, yolo_model, recognizer, font_params):
+
+def format_license_plate(plate_text: str) -> str:
+    """Format license plate text according to specified rules."""
+    # Remove trailing underscores (padding) first
+    plate_text = plate_text.rstrip("_")
+    
+    # Check if it starts with vehicle type prefixes (256, CL, M, D, etc.)
+    vehicle_prefixes = ["256_", "CL_", "M_", "D_"]
+    for prefix in vehicle_prefixes:
+        if plate_text.startswith(prefix):
+            # Replace underscore after prefix with space
+            plate_text = plate_text.replace("_", " ", 1)
+            return plate_text
+    
+    # Check if plate has underscore in the middle with 3 letters at start
+    # Pattern: ABC_123
+    if len(plate_text) >= 4 and plate_text[:3].isalpha() and "_" in plate_text[3:]:
+        # Replace underscore with space
+        plate_text = plate_text.replace("_", " ")
+    
+    return plate_text
+
+
+def store_plate_in_database(plate_text: str, db_file: str = "license_plates_db.csv"):
+    """
+    Store license plate in CSV database if not already registered.
+    Returns True if plate was newly added, False if already exists.
+    """
+    # Check if file exists and read existing plates
+    existing_plates = set()
+    file_exists = os.path.exists(db_file)
+    
+    if file_exists:
+        try:
+            with open(db_file, 'r', newline='') as f:
+                reader = csv.DictReader(f)
+                for row in reader:
+                    existing_plates.add(row.get("license_plate", ""))
+        except Exception as e:
+            print(f"Error reading database: {e}")
+            # Continue anyway to create/fix the file
+    
+    # Check if plate already exists
+    if plate_text in existing_plates:
+        return False  # Plate already registered
+    
+    # Add new plate with timestamp
+    timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    
+    # Write to CSV in append mode
+    with open(db_file, 'a', newline='') as f:
+        writer = csv.writer(f)
+        
+        # Write header if file is new
+        if not file_exists or os.path.getsize(db_file) == 0:
+            writer.writerow(["time", "license_plate"])
+        
+        writer.writerow([timestamp, plate_text])
+    
+    print(f"✓ New plate registered: {plate_text}")
+    return True
+
+
+def process_frame(frame, yolo_model, recognizer, font_params, db_file):
     """Process a single frame for license plate detection and recognition"""
     font, fontScale, color, color_outline, thickness, thickness_outline = font_params
     
@@ -75,18 +141,25 @@ def process_frame(frame, yolo_model, recognizer, font_params):
                 
                 plate_text, probs = recognizer.recognize(image2recognize)
                 
+                # Format the license plate
+                formatted_plate = format_license_plate(plate_text)
+                
+                # Store in database
+                store_plate_in_database(formatted_plate, db_file)
+                
                 # Draw bounding box
                 cv2.rectangle(frame, (int(x1), int(y1)), (int(x2), int(y2)), (255, 0, 0), 2)
                 
                 # Draw text with outline effect
-                cv2.putText(frame, f"{plate_text}", org, font, fontScale, 
+                cv2.putText(frame, f"{formatted_plate}", org, font, fontScale, 
                            color_outline, thickness_outline, cv2.LINE_AA, False)
-                cv2.putText(frame, f"{plate_text}", org, font, fontScale, 
+                cv2.putText(frame, f"{formatted_plate}", org, font, fontScale, 
                            color, thickness, cv2.LINE_AA, False)
     
     return frame, plates_detected
 
-def image_mode(image_path, yolo_model, recognizer, font_params):
+
+def image_mode(image_path, yolo_model, recognizer, font_params, db_file):
     """Process a single image"""
     image2predict = cv2.imread(image_path)
     if image2predict is None:
@@ -94,7 +167,7 @@ def image_mode(image_path, yolo_model, recognizer, font_params):
         return
     
     image2predict = cv2.resize(image2predict, (1080, 720))
-    processed_frame, plates_detected = process_frame(image2predict, yolo_model, recognizer, font_params)
+    processed_frame, plates_detected = process_frame(image2predict, yolo_model, recognizer, font_params, db_file)
     
     # Add detection status
     status_text = "Plates Detected!" if plates_detected else "No Plates Detected"
@@ -109,7 +182,8 @@ def image_mode(image_path, yolo_model, recognizer, font_params):
             cv2.destroyAllWindows()
             break
 
-def video_mode(video_path, yolo_model, recognizer, font_params):
+
+def video_mode(video_path, yolo_model, recognizer, font_params, db_file):
     """Process video file or webcam"""
     # Open video file or webcam (0 for default camera)
     if video_path.lower() == 'webcam' or video_path == '0':
@@ -136,7 +210,7 @@ def video_mode(video_path, yolo_model, recognizer, font_params):
         start_time = time.time()
         frame_count += 1
         frame = cv2.resize(frame, (1080, 720))
-        processed_frame, plates_detected = process_frame(frame, yolo_model, recognizer, font_params)
+        processed_frame, plates_detected = process_frame(frame, yolo_model, recognizer, font_params, db_file)
         
         if plates_detected:
             plates_detected_count += 1
@@ -189,6 +263,7 @@ def video_mode(video_path, yolo_model, recognizer, font_params):
         print(f"Velocidad promedio: {avg_fps:.2f} FPS")
         print(f"Frames con detección de placa: {plates_detected_count} ({(plates_detected_count/frame_count)*100:.1f}%)")
 
+
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='License Plate Recognition System')
     parser.add_argument('mode', choices=['image', 'video'], 
@@ -201,6 +276,8 @@ if __name__ == "__main__":
                        help='Path to OCR model (default: models/best_ocr.keras)')
     parser.add_argument('--config', default='models/plate_config.yaml',
                        help='Path to plate config file (default: models/plate_config.yaml)')
+    parser.add_argument('--database', default='license_plates_db.csv',
+                       help='Path to CSV database file (default: license_plates_db.csv)')
     
     args = parser.parse_args()
     
@@ -226,9 +303,9 @@ if __name__ == "__main__":
     # Process based on mode
     if args.mode == 'image':
         print(f"Processing image: {args.input}")
-        image_mode(args.input, yolo_model, recognizer, font_params)
+        image_mode(args.input, yolo_model, recognizer, font_params, args.database)
     else:  # video mode
         print(f"Processing video: {args.input}")
-        video_mode(args.input, yolo_model, recognizer, font_params)
+        video_mode(args.input, yolo_model, recognizer, font_params, args.database)
         
     print("Done!")

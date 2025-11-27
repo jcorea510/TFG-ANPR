@@ -608,16 +608,24 @@ del Centro Nacional de Alta Tecnología (CeNAT), específicamente en los nodos d
 Cada nodo dispone de una GPU NVIDIA Tesla V100 o NVIDIA L40S,
 procesadores multinúcleo y gran capacidad de memoria, según lo indicado en la tabla~\ref{tab:hardware-cluster}.
 Esta infraestructura permitió realizar los experimentos de manera reproducible y
-con tiempos de entrenamiento razonables para modelos de visión por computadora.
+con tiempos de entrenamiento razonables para modelos de visión por computadora,
+según lo mostrado en tabla~\ref{tab:tiempo-entrenamiento}.
+
+\begin{table}[h]
+    \centering
+    \begin{tabular}{cc}
+        \toprule
+        Métrica & Tiempo \\
+        \midrule
+        Tiempo medio de entrenamiento & 11h 23m 22s \\
+        Variabilidad del tiempo de entrenamiento & 26m 47s \\
+        \bottomrule
+    \end{tabular}
+    \caption{Resultados de duración de los experimentos de entrenamiento}
+	\label{tab:tiempo-entrenamiento}
+\end{table}
 
 \subsection{Segunda ronda de experimentos: optimización de aumentos de datos}
-
-Con los parámetros principales ya fijados,
-la segunda ronda de experimentos se enfocó en evaluar el impacto de los esquemas de aumento de datos,
-modificando tanto el tipo como la intensidad de los mismos.
-En esta fase se probaron técnicas como rotaciones, cambios de brillo y contraste,
-ruido aditivo y distorsiones geométricas, entre otras.
-Las gráficas resultantes de los experimentos se muestran en la figura~\ref{fig:graficas-train-val-aumentado}.
 
 \begin{figure}[h]
 	\centering
@@ -666,6 +674,13 @@ Las gráficas resultantes de los experimentos se muestran en la figura~\ref{fig:
 	\caption{Métricas de entrenamiento y validación de aumentado de placas con aumentado de datos}
 	\label{fig:graficas-train-val-aumentado}
 \end{figure}
+
+Con los parámetros principales ya fijados,
+la segunda ronda de experimentos se enfocó en evaluar el impacto de los esquemas de aumento de datos,
+modificando tanto el tipo como la intensidad de los mismos.
+En esta fase se probaron técnicas como rotaciones, cambios de brillo y contraste,
+ruido aditivo y distorsiones geométricas, entre otras.
+Las gráficas resultantes de los experimentos se muestran en la figura~\ref{fig:graficas-train-val-aumentado}.
 
 \begin{table}[hb]
 	\centering
