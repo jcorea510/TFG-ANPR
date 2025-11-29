@@ -6,18 +6,18 @@ La detección y reconocimiento de números de placas en este proyecto
 es realizada mediante dos etapas extremo a extremo utilizando
 YOLO11 (detección) y Fast-Plate-OCR (reconocimiento).
 
-<img src="./doc/cap1/fig/proy/diagrama-bloques-alpr.drawio.png" alt="diagrama-bloques-alpr.png" width="720"/>
+<img src="./doc/figuras/diagrama-bloques-alpr.drawio.png" alt="diagrama-bloques-alpr.png" width="720"/>
 
 ### Detección de placa con YOLO:
 
 #### Matriz de confusión del mejor modelo de detección de placas (YOLO11 nano)
-<img src="./doc/cap1/fig/proy/confusion_matrix-exp3.png" alt="confusion_matrix-exp3.png" width="720"/>
+<img src="./doc/figuras/confusion_matrix-exp3.png" alt="confusion_matrix-exp3.png" width="720"/>
 
 #### Curvas de aprendizaje del mejor modelo de detección de placas (YOLO11 nano)
-<img src="./doc/cap1/fig/proy/metricas-curvas-exp3.png" alt="metricas-curvas-exp3.png" width="720"/>
+<img src="./doc/figuras/metricas-curvas-exp3.png" alt="metricas-curvas-exp3.png" width="720"/>
 
 #### Ejemplos de detección de placas vehiculares 
-<img src="./doc/cap1/fig/proy/ejemplo-deteccion-placas.jpg" alt="Ejemplos de detección de placas" width="720"/>
+<img src="./doc/figuras/ejemplo-deteccion-placas.jpg" alt="Ejemplos de detección de placas" width="720"/>
 
 ### Métricas obtenidas
 
@@ -31,16 +31,16 @@ YOLO11 (detección) y Fast-Plate-OCR (reconocimiento).
 ### Reconocimiento de placa con Fast-Plate-OCR:
 
 #### Curvas de aprendizaje del mejor modelo de reconocimiento de placas (Fast-Plate-OCR XS)
-<img src="./doc/cap1/fig/proy/train_plate_acc_round2.png" alt="train_plate_acc_round2.png" width="720"/>
-<img src="./doc/cap1/fig/proy/val_plate_acc_round2.png" alt="val_plate_acc_round2.png" width="720"/>
+<img src="./doc/figuras/train_plate_acc_round2.png" alt="train_plate_acc_round2.png" width="720"/>
+<img src="./doc/figuras/val_plate_acc_round2.png" alt="val_plate_acc_round2.png" width="720"/>
 
 #### Ejemplos de reconocimiento de placas vehiculares 
 
 <div style="display: flex; flex-wrap: wrap; gap: 10px;">
-  <img src="./doc/cap1/fig/proy/ejemplo-ocr-1.png" width="350"/>
-  <img src="./doc/cap1/fig/proy/ejemplo-ocr-3.png" width="350"/>
-  <img src="./doc/cap1/fig/proy/ejemplo-ocr-4.png" width="350"/>
-  <img src="./doc/cap1/fig/proy/ejemplo-ocr-6.png" width="350"/>
+  <img src="./doc/figuras/ejemplo-ocr-1.png" width="350"/>
+  <img src="./doc/figuras/ejemplo-ocr-3.png" width="350"/>
+  <img src="./doc/figuras/ejemplo-ocr-4.png" width="350"/>
+  <img src="./doc/figuras/ejemplo-ocr-6.png" width="350"/>
 </div>
 
 ### Métricas obtenidas
@@ -56,7 +56,7 @@ YOLO11 (detección) y Fast-Plate-OCR (reconocimiento).
 
 
 #### Ejemplos de reconocimiento de placas vehiculares 
-<img src="./doc/cap1/fig/proy/app-ejemplo-1.png" alt="app-ejemplo-1.png" width="720"/>
+<img src="./doc/figuras/app-ejemplo-1.png" alt="app-ejemplo-1.png" width="720"/>
 
 #### Métricas obtenidas
 Hadware utilizado para pruebas

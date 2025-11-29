@@ -7,36 +7,9 @@ src/sources/
 src/wandb/
 src/logs/
 
-# temporary files for cache and loaders
-doc/cronograma/*aux
-doc/cronograma/*log
-doc/cronograma/*out
-doc/cronograma/*pdf
-doc/cronograma/*ods
-doc/presentacion/
-doc/plantilla_presentacion/
-doc/firmas/
-doc/cap1/*aux
-doc/cap1/*log
-doc/cap1/*pdf
-doc/cap1/*bcf
-doc/cap1/*idx
-doc/cap1/*lof
-doc/cap1/*lot
-doc/cap1/*nlo
-doc/cap1/*.run.xml
-doc/cap1/*.toc
-doc/cap1/*.todo
-doc/cap1/*.out
-doc/cap1/main-blx.bib
-doc/cap1/main.bbl
-doc/cap1/main.blg
-doc/cap1/main.ilg
-doc/cap1/main.nls
-doc/cap1/*.back
-doc/cap1/dibujos/
-doc/cap1/fig/proy/*.svg
-doc/cap1/svg*
+doc/*
+!doc/figuras
+!doc/informe.pdf
 
 # programs for experiments
 src/yolo_fail_filter.py
